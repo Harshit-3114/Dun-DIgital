@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "origin": "failed-assert",
+  "expected": "element \"Tell us what you're building.\" AND console",
+  "observed": "no 'dialog' named 'Tell us what you're building.'; saw: Tell us what you’re building.",
+  "steps": [
+    {
+      "tool": "reticle_act",
+      "anchor": {
+        "kind": "testid",
+        "value": ""
+      },
+      "action": "click"
+    }
+  ],
+  "id": "1791108439977-click-025428d5",
+  "createdAt": 1791108439977,
+  "seen": 1,
+  "lastSeenAt": 1791108439977
+}

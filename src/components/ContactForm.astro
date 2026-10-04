@@ -1,0 +1,105 @@
+---
+import { services } from '../data/content';
+
+const endpoint = import.meta.env.PUBLIC_INQUIRY_ENDPOINT ?? '';
+
+const budgets = ['Under ₹50,000', '₹50,000 – ₹1,00,000', '₹1,00,000 – ₹3,00,000', '₹3,00,000+', 'Not sure yet'];
+const timelines = ['ASAP', 'Within a month', '1–3 months', 'Just exploring'];
+const sources = ['Google search', 'Instagram', 'LinkedIn', 'Referral', 'Event / CII', 'Other'];
+
+const field =
+  'mt-2 block w-full rounded-none border-0 border-b border-graphite/40 bg-transparent px-0 py-3 text-base text-carbon-black outline-none transition-[border-color] duration-150 placeholder:text-graphite/70 focus:border-carbon-black focus:ring-0';
+const err = 'field-error mt-2 block min-h-4 text-xs';
+---
+
+<form data-contact-form data-endpoint={endpoint} class="lead-form" novalidate>
+  <div class="grid gap-6 sm:grid-cols-2">
+    <label class="block text-sm text-forest-ink">Name <span class="text-graphite">*</span><input required name="name" data-testid="lead-name" autocomplete="name" minlength="2" maxlength="80" aria-describedby="name-error" class={field} placeholder="Your name" /><span id="name-error" data-field-error class={err} role="alert"></span></label>
+    <label class="block text-sm text-forest-ink">Email <span class="text-graphite">*</span><input required type="email" name="email" data-testid="lead-email" autocomplete="email" maxlength="254" aria-describedby="email-error" class={field} placeholder="you@company.com" /><span id="email-error" data-field-error class={err} role="alert"></span></label>
+  </div>
+  <div class="grid gap-6 sm:grid-cols-2">
+    <label class="block text-sm text-forest-ink">Phone <span class="text-graphite">(optional)</span><input type="tel" name="phone" autocomplete="tel" pattern="[0-9+()\s-]{7,20}" aria-describedby="phone-error" class={field} placeholder="+91 …" /><span id="phone-error" data-field-error class={err} role="alert"></span></label>
+    <label class="block text-sm text-forest-ink">Company / org <span class="text-graphite">(optional)</span><input name="company" autocomplete="organization" maxlength="80" aria-describedby="company-error" class={field} placeholder="Company or org" /><span id="company-error" data-field-error class={err} role="alert"></span></label>
+  </div>
+
+  <fieldset data-checkbox-group="services" data-min="1" data-required class="lead-group">
+    <legend>What do you need? <span class="text-graphite">*</span></legend>
+    <div class="svc-pills">
+      {services.map((service) => (
+        <label class="svc-pill"><input type="checkbox" name="services" value={service.title} class="sr-only" /><span>{service.title}</span></label>
+      ))}
+    </div>
+    <p data-error-for="services" class:list={[err]} role="alert"></p>
+  </fieldset>
+
+  <div class="grid gap-6 sm:grid-cols-2">
+    <label class="block text-sm text-forest-ink">Budget <span class="text-graphite">(optional)</span>
+      <select name="budget" class={field}>
+        <option value="">Select a range…</option>
+        {budgets.map((budget) => <option value={budget}>{budget}</option>)}
+      </select>
+    </label>
+    <label class="block text-sm text-forest-ink">Timeline <span class="text-graphite">(optional)</span>
+      <select name="timeline" class={field}>
+        <option value="">Select a timeline…</option>
+        {timelines.map((timeline) => <option value={timeline}>{timeline}</option>)}
+      </select>
+    </label>
+  </div>
+  <label class="block text-sm text-forest-ink">How did you hear about us? <span class="text-graphite">(optional)</span>
+    <select name="source" class={field}>
+      <option value="">Select one…</option>
+      {sources.map((source) => <option value={source}>{source}</option>)}
+    </select>
+  </label>
+
+  <label class="block text-sm text-forest-ink">Project details<textarea required name="message" data-testid="lead-message" maxlength="1000" minlength="12" aria-describedby="message-error message-count" rows="5" class={`${field} resize-y`} placeholder="What are you building, launching or changing? Timelines, channels, anything you know…" /><span id="message-count" data-char-count class="mt-1 block text-right font-mono text-[10px] text-graphite">0 / 1000</span><span id="message-error" data-field-error class={err} role="alert"></span></label>
+
+  {/* Honeypot: bots fill this, humans never see it */}
+  <label class="sr-only" aria-hidden="true">Website<input type="text" name="website" data-honeypot tabindex="-1" autocomplete="off" /></label>
+  <p data-form-error hidden class="rounded border border-[#c22e2e]/30 bg-[#c22e2e]/10 px-4 py-3 text-sm text-[#c22e2e]" role="alert"></p>
+
+  <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+    <p class="m-0 max-w-[28ch] text-xs leading-[1.4] text-graphite">We reply within 2 business days. No obligation, no jargon.</p>
+    <button type="submit" data-submit data-testid="lead-submit" data-label="Send inquiry" class="rounded-full bg-carbon-black px-6 py-3 text-sm font-medium tracking-[-0.02em] text-bone-cream transition-[background-color,color,transform] duration-150 ease-editorial hover:bg-clay focus-visible:ring-2 focus-visible:ring-forest-ink active:scale-[0.97] motion-reduce:transition-none disabled:cursor-wait disabled:opacity-60">Send inquiry</button>
+  </div>
+</form>
+
+<div data-form-success hidden class="lead-success" role="status" aria-live="polite">
+  <p class="mb-3 font-mono text-[10px] uppercase tracking-[0.1em] text-stone-taupe">Message received</p>
+  <h3 tabindex="-1" data-autofocus class="m-0 text-3xl font-light tracking-[-0.05em] text-carbon-black">Thanks. We’ll take it from here.</h3>
+  <p class="mt-4 text-base leading-[1.38] text-forest-ink">Your inquiry is with the Dun Digital team. We’ll reply within 2 business days.</p>
+</div>
+
+<style>
+  .lead-group { border:0; margin:0; padding:0; min-width:0; }
+  .lead-group legend { font-size:0.875rem; color:var(--ink); padding:0; margin-bottom:2px; }
+  .svc-pills { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .svc-pill span { display:inline-block; padding:10px 16px; min-height:44px; border:1.5px solid var(--ink); border-radius:999px; background:var(--paper); color:var(--ink); font-size:12px; font-weight:700; cursor:pointer; transition:background-color 150ms ease, color 150ms ease, translate 150ms var(--ease-out); }
+  .svc-pill input:checked + span { background:var(--ink); color:var(--lime); }
+  .svc-pill input:focus-visible + span { outline:2px solid var(--grape); outline-offset:2px; }
+  .lead-form [aria-invalid="true"] { border-bottom-color:var(--error); }
+  .lead-group[aria-invalid="true"] .svc-pill span { border-color:var(--error); }
+  .lead-form [data-field-error], .lead-form [data-error-for] { color:var(--error); }
+  .lead-success { border-top:1px solid var(--line); padding-top:32px; }
+  .lead-success.success-reveal { animation:inquiry-success-reveal 420ms cubic-bezier(.23,1,.32,1) both; }
+  @keyframes inquiry-success-reveal {
+    from { opacity:0; transform:translateY(14px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    .lead-success.success-reveal { animation:none; }
+  }
+  @media (hover:none) {
+    .svc-pill span:hover { background:var(--paper); }
+    .svc-pill input:checked + span:hover { background:var(--ink); }
+  }
+</style>
+
+<script>
+  import { initContactForm } from '../scripts/contact-form';
+
+  document
+    .querySelectorAll<HTMLFormElement>('form[data-contact-form]')
+    .forEach((form) => initContactForm(form));
+</script>

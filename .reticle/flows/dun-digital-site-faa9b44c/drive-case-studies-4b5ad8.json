@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "name": "drive-case-studies-4b5ad8",
+  "projectId": "dun-digital-site-faa9b44c",
+  "createdAt": 1791108457192,
+  "steps": [
+    {
+      "tool": "reticle_act",
+      "anchor": {
+        "kind": "role",
+        "role": "button",
+        "name": "Start"
+      },
+      "args": {},
+      "action": "click",
+      "expect": {
+        "kind": "element",
+        "query": {
+          "role": "dialog",
+          "name": "Tell us what you’re building."
+        },
+        "state": "visible"
+      },
+      "page": "/case-studies/"
+    }
+  ],
+  "startPath": "/case-studies/",
+  "requires": [
+    {
+      "kind": "route",
+      "pathname": "/case-studies/"
+    }
+  ],
+  "ensures": [
+    {
+      "kind": "route",
+      "pathname": "/case-studies/"
+    }
+  ],
+  "author": {
+    "agent": "opencode"
+  }
+}

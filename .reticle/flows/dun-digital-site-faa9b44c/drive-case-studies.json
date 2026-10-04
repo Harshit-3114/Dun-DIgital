@@ -1,0 +1,50 @@
+{
+  "version": 2,
+  "name": "drive-case-studies",
+  "projectId": "dun-digital-site-faa9b44c",
+  "createdAt": 1791108307685,
+  "steps": [
+    {
+      "tool": "reticle_act",
+      "anchor": {
+        "kind": "role",
+        "role": "link",
+        "name": "Work"
+      },
+      "args": {},
+      "action": "click",
+      "expect": {
+        "kind": "allOf",
+        "predicates": [
+          {
+            "kind": "route",
+            "pathname": "/case-studies/"
+          },
+          {
+            "kind": "console",
+            "level": "error",
+            "absent": true
+          }
+        ]
+      },
+      "page": "/",
+      "endPage": "/case-studies/"
+    }
+  ],
+  "startPath": "/",
+  "requires": [
+    {
+      "kind": "route",
+      "pathname": "/"
+    }
+  ],
+  "ensures": [
+    {
+      "kind": "route",
+      "pathname": "/case-studies/"
+    }
+  ],
+  "author": {
+    "agent": "opencode"
+  }
+}

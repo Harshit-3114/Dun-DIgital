@@ -1,0 +1,439 @@
+---
+import '../styles/site.css';
+import MobileNav from '../components/MobileNav.astro';
+import InquiryDrawer from '../components/InquiryDrawer.astro';
+import ScrollChrome from '../components/ScrollChrome.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  activePath?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const { title, description, activePath = '', image = '/gallery/ragam/image0.jpeg', noindex = false } = Astro.props;
+const siteUrl = Astro.site ?? new URL('https://dun.digital');
+const canonicalURL = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', siteUrl).href.replace(/\/$/, '/') === new URL('/', siteUrl).href
+  ? new URL('/', siteUrl).href
+  : new URL(Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`, siteUrl).href;
+const ogImageURL = new URL(image, siteUrl).href;
+const fullTitle = `${title} · Dun Digital`;
+const navLinks = [
+  { href: '/about/', label: 'About' },
+  { href: '/services/', label: 'Services' },
+  { href: '/case-studies/', label: 'Case studies' },
+  { href: '/#gallery', label: 'Gallery' },
+  { href: '/contact/', label: 'Contact' }
+];
+const normalize = (p: string) => (p.endsWith('/') ? p : `${p}/`);
+const isCurrent = (href: string) => {
+  if (href.includes('#')) return false;
+  return normalize(activePath) === href || (href !== '/' && normalize(activePath).startsWith(href));
+};
+import { readFileSync as reticleReadFileSync } from 'node:fs';
+import { homedir as reticleHomedir } from 'node:os';
+import { join as reticleJoin } from 'node:path';
+const pairingToken = (() => {
+  if (!import.meta.env.DEV) return '';
+  const dir = process.env['RETICLE_PAIRING_TOKEN_DIR'] || reticleJoin(reticleHomedir(), '.reticle');
+  try { return reticleReadFileSync(reticleJoin(dir, 'pairing-token'), 'utf8').trim(); } catch { return ''; }
+})();
+const pairingRoot = import.meta.env.DEV ? process.cwd() : '';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="theme-color" content="#fff3e6" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1a1025" />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content={description} />
+    <meta name="author" content="Dun Digital" />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Dun Digital" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:alt" content="Selected Dun Digital campaign work" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <meta name="generator" content={Astro.generator} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Organization',
+          '@id': 'https://dun.digital/#org',
+          name: 'Dun Digital',
+          url: 'https://dun.digital/',
+          logo: 'https://dun.digital/favicon.svg',
+          email: 'hello@dun.digital',
+          address: { '@type': 'PostalAddress', addressLocality: 'Chennai', addressCountry: 'IN' },
+        },
+        {
+          '@type': 'WebSite',
+          '@id': 'https://dun.digital/#website',
+          url: 'https://dun.digital/',
+          name: 'Dun Digital',
+          publisher: { '@id': 'https://dun.digital/#org' },
+        },
+        {
+          '@type': 'WebPage',
+          '@id': canonicalURL,
+          url: canonicalURL,
+          name: fullTitle,
+          description,
+          isPartOf: { '@id': 'https://dun.digital/#website' },
+        },
+      ],
+    })} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Mono:wght@400;500;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" />
+    <noscript><style>.preloader { display:none !important; } body[data-preloading] .reveal { animation:none; } .motion-reveal, .motion-stagger > div { opacity:1 !important; filter:none !important; translate:0 0 !important; }</style></noscript>
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <div class="preloader" data-preloader aria-hidden="true">
+      <div class="preloader-inner">
+        <span class="preloader-mark">D</span>
+        <span class="preloader-count" data-preloader-count>0%</span>
+      </div>
+    </div>
+    <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+    <a class="skip-link" href="#top">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Dun Digital home"><span class="brand-mark">D</span><span>DUN<br /><em>DIGITAL</em></span></a>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        {navLinks.map((link) => <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>{link.label}</a>)}
+      </nav>
+      <button type="button" class="header-cta" data-inquiry-open>Start a conversation</button>
+      <MobileNav links={navLinks} />
+    </header>
+
+    <main id="top">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-waves" aria-hidden="true">
+        <svg class="wave-one" viewBox="0 0 2880 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,64 C240,104 480,24 720,64 C960,104 1200,24 1440,64 C1680,104 1920,24 2160,64 C2400,104 2640,24 2880,64 L2880,120 L0,120 Z" fill="currentColor" /></svg>
+        <svg class="wave-two" viewBox="0 0 2880 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,56 C240,16 480,96 720,56 C960,16 1200,96 1440,56 C1680,16 1920,96 2160,56 C2400,16 2640,96 2880,56 L2880,120 L0,120 Z" fill="currentColor" /></svg>
+      </div>
+      <div class="footer-giant section-wrap" aria-hidden="true">DUN DIGITAL</div>
+      <div class="footer-inner section-wrap">
+        <div class="footer-brand">
+          <a class="brand" href="/" aria-label="Dun Digital home"><span class="brand-mark">D</span><span>DUN<br /><em>DIGITAL</em></span></a>
+          <p>One accountable team for brands that need their digital presence to move as one.</p>
+        </div>
+        <div class="footer-col"><span class="footer-col-label">Explore</span><a href="/about/">About</a><a href="/services/">Services</a><a href="/case-studies/">Case studies</a><a href="/#gallery">Gallery</a><a href="/contact/">Contact</a></div>
+        <div class="footer-col"><span class="footer-col-label">Start here</span><button type="button" data-inquiry-open>Start a conversation</button><a href="mailto:hello@dun.digital">hello@dun.digital</a></div>
+      </div>
+      <div class="newsletter section-wrap"><h3>Occasional notes from the studio.</h3><div><p class="newsletter-done">No spam, just good work when it is ready.</p><a class="footer-mail" href="mailto:hello@dun.digital?subject=Add%20me%20to%20the%20studio%20notes">Get the notes →</a></div></div>
+      <div class="footer-bottom section-wrap"><span>© {new Date().getFullYear()} Dun Digital. All rights reserved.</span><a class="footer-top" href="#top">Back to top ↑</a></div>
+    </footer>
+    <InquiryDrawer />
+    <ScrollChrome activePath={activePath} />
+    <script>
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const preloader = document.querySelector<HTMLElement>('[data-preloader]');
+      const preloaderCount = document.querySelector<HTMLElement>('[data-preloader-count]');
+      const readVisited = () => {
+        try { return sessionStorage.getItem('dd-visited'); } catch { return '1'; }
+      };
+      const markVisited = () => {
+        try { sessionStorage.setItem('dd-visited', '1'); } catch { return; }
+      };
+      if (preloader) {
+        if (readVisited() || reducedMotion) {
+          preloader.remove();
+        } else {
+          markVisited();
+          document.body.setAttribute('data-preloading', '');
+          document.body.style.overflow = 'hidden';
+          const start = performance.now();
+          const minDuration = 600;
+          let ready = document.readyState === 'complete';
+          window.addEventListener('load', () => { ready = true; });
+          let finished = false;
+          let countTimer: number | undefined;
+          const finish = () => {
+            if (finished) return;
+            finished = true;
+            window.clearInterval(countTimer);
+            if (preloaderCount) preloaderCount.textContent = '100%';
+            preloader.classList.add('is-done');
+            document.body.style.overflow = '';
+            document.body.removeAttribute('data-preloading');
+            window.setTimeout(() => preloader.remove(), 750);
+          };
+          // Timer-driven so completion never depends on rAF (which can starve
+          // in headless runs, background tabs and battery-saver modes).
+          countTimer = window.setInterval(() => {
+            const elapsed = performance.now() - start;
+            if (preloaderCount) {
+              preloaderCount.textContent = `${Math.floor(Math.min(95, (elapsed / (minDuration + 250)) * 100))}%`;
+            }
+          }, 90);
+          window.setTimeout(() => { if (ready) finish(); }, minDuration + 250);
+          window.setTimeout(finish, 1200);
+        }
+      }
+
+      const splitHeading = (node: Node, counter: { index: number }) => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          const parts = (node.textContent ?? '').split(/(\s+)/);
+          const frag = document.createDocumentFragment();
+          parts.forEach((part) => {
+            if (!part.trim()) { frag.append(part); return; }
+            const span = document.createElement('span');
+            span.className = 'split-word';
+            span.style.transitionDelay = `${counter.index++ * 40}ms`;
+            span.textContent = part;
+            frag.append(span);
+          });
+          (node as Text).replaceWith(frag);
+        } else if (node.nodeType === Node.ELEMENT_NODE && (node as HTMLElement).tagName !== 'BR') {
+          Array.from(node.childNodes).forEach((child) => splitHeading(child, counter));
+        }
+      };
+
+      const headingObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            headingObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      document.querySelectorAll<HTMLElement>('main section h2, [data-inner-page] h1').forEach((heading) => {
+        splitHeading(heading, { index: 0 });
+        if (reducedMotion) heading.classList.add('is-visible'); else headingObserver.observe(heading);
+      });
+
+      const motionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.setAttribute('data-visible', '');
+            motionObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+      document.querySelectorAll<HTMLElement>('.motion-reveal, .motion-stagger').forEach((element) => {
+        if (reducedMotion) element.setAttribute('data-visible', ''); else motionObserver.observe(element);
+      });
+
+      const groupObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).setAttribute('data-visible', '');
+            groupObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.25 });
+      const industryCloud = document.querySelector<HTMLElement>('.industry-cloud');
+      if (industryCloud) {
+        industryCloud.setAttribute('data-animate', '');
+        industryCloud.querySelectorAll<HTMLElement>(':scope > span').forEach((pill, index) => {
+          pill.style.setProperty('--pill-delay', `${index * 30}ms`);
+        });
+        groupObserver.observe(industryCloud);
+      }
+
+      const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+      const runCounter = (el: HTMLElement) => {
+        const target = parseFloat(el.dataset.countup ?? '0');
+        const suffix = el.dataset.suffix ?? '';
+        if (reducedMotion) {
+          el.textContent = `${target}${suffix}`;
+          return;
+        }
+        const start = performance.now();
+        const duration = 1100;
+        const tick = (now: number) => {
+          const t = Math.min(1, (now - start) / duration);
+          el.textContent = `${Math.round(easeOutCubic(t) * target)}${suffix}`;
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            runCounter(entry.target as HTMLElement);
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      document.querySelectorAll<HTMLElement>('[data-countup]').forEach((el) => counterObserver.observe(el));
+
+      const heroArt = document.querySelector<HTMLElement>('.hero-art');
+      const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (heroArt && finePointer && !reducedMotion) {
+        let targetX = 0;
+        let targetY = 0;
+        let curX = 0;
+        let curY = 0;
+        let raf = 0;
+        const loop = () => {
+          curX += (targetX - curX) * 0.08;
+          curY += (targetY - curY) * 0.08;
+          heroArt.style.transform = `translate3d(${curX.toFixed(2)}px, ${curY.toFixed(2)}px, 0)`;
+          if (Math.abs(targetX - curX) > 0.05 || Math.abs(targetY - curY) > 0.05) {
+            raf = requestAnimationFrame(loop);
+          } else {
+            raf = 0;
+          }
+        };
+        document.querySelector('.hero')?.addEventListener('mousemove', (event) => {
+          const mouseEvent = event as MouseEvent;
+          const rect = heroArt.getBoundingClientRect();
+          targetX = ((mouseEvent.clientX - (rect.left + rect.width / 2)) / window.innerWidth) * 12;
+          targetY = ((mouseEvent.clientY - (rect.top + rect.height / 2)) / window.innerHeight) * 12;
+          if (!raf) raf = requestAnimationFrame(loop);
+        });
+        // Settle back to rest when the cursor leaves instead of freezing mid-pose.
+        document.querySelector('.hero')?.addEventListener('mouseleave', () => {
+          targetX = 0;
+          targetY = 0;
+          if (!raf) raf = requestAnimationFrame(loop);
+        });
+      }
+
+      // Spotlight hover: one delegated listener feeds cursor position
+      // into any .spot card's glow. Fine pointers only; CSS gates the rest.
+      if (finePointer && !reducedMotion) {
+        document.addEventListener('mousemove', (event) => {
+          const mouseEvent = event as MouseEvent;
+          const target = mouseEvent.target as HTMLElement | null;
+          const card = target?.closest?.('.spot') as HTMLElement | null;
+          document.querySelectorAll<HTMLElement>('.spot.spot-lit').forEach((lit) => {
+            if (lit !== card) lit.classList.remove('spot-lit');
+          });
+          if (card) {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--mx', `${(mouseEvent.clientX - rect.left).toFixed(1)}px`);
+            card.style.setProperty('--my', `${(mouseEvent.clientY - rect.top).toFixed(1)}px`);
+            card.classList.add('spot-lit');
+          }
+        }, { passive: true });
+      }
+
+      const progressBar = document.querySelector<HTMLElement>('[data-scroll-progress]');
+      if (progressBar && !reducedMotion) {
+        let progressTicking = false;
+        const updateProgress = () => {
+          progressTicking = false;
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          progressBar.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+        };
+        window.addEventListener('scroll', () => {
+          if (!progressTicking) { progressTicking = true; requestAnimationFrame(updateProgress); }
+        }, { passive: true });
+        updateProgress();
+      }
+
+      const typewriter = document.querySelector<HTMLElement>('[data-typewriter]');
+      if (typewriter && !reducedMotion) {
+        let words: string[] = [];
+        try { words = JSON.parse(typewriter.dataset.words ?? '[]'); } catch { words = []; }
+        if (words.length > 1) {
+          typewriter.classList.add('is-typing');
+          const reserveHeight = () => {
+            const original = typewriter.textContent ?? '';
+            let max = 0;
+            words.forEach((word) => {
+              typewriter.textContent = word;
+              max = Math.max(max, typewriter.offsetHeight);
+            });
+            typewriter.textContent = original;
+            typewriter.style.minHeight = `${max}px`;
+          };
+          if (document.fonts) {
+            document.fonts.ready.then(reserveHeight).catch(() => reserveHeight());
+          } else {
+            reserveHeight();
+          }
+          window.addEventListener('load', reserveHeight);
+          const typewriterParent = typewriter.parentElement;
+          if (typewriterParent && 'ResizeObserver' in window) {
+            new ResizeObserver(() => reserveHeight()).observe(typewriterParent);
+          }
+          const typeSpeed = 70;
+          const deleteSpeed = 35;
+          const holdTime = 2200;
+          const maxRotations = 3;
+          let wordIndex = 0;
+          let charIndex = words[0].length;
+          let deleting = true;
+          let rotations = 0;
+          let inView = true;
+          if ('IntersectionObserver' in window) {
+            new IntersectionObserver((entries) => { inView = entries[0].isIntersecting; }).observe(typewriter);
+          }
+          const step = () => {
+            // Never burn cycles rewriting the H1 while it is off-screen.
+            if (!inView) {
+              window.setTimeout(step, 500);
+              return;
+            }
+            if (deleting) {
+              charIndex -= 1;
+              typewriter.textContent = words[wordIndex].slice(0, Math.max(0, charIndex));
+              if (charIndex <= 0) {
+                charIndex = 0;
+                wordIndex = (wordIndex + 1) % words.length;
+                if (wordIndex === 0) {
+                  rotations += 1;
+                  // Settle on the first word instead of looping forever.
+                  if (rotations >= maxRotations) {
+                    typewriter.textContent = words[0];
+                    typewriter.classList.remove('is-typing');
+                    return;
+                  }
+                }
+                deleting = false;
+                window.setTimeout(step, 350);
+                return;
+              }
+              window.setTimeout(step, deleteSpeed);
+              return;
+            }
+            charIndex += 1;
+            typewriter.textContent = words[wordIndex].slice(0, charIndex);
+            if (charIndex >= words[wordIndex].length) {
+              deleting = true;
+              window.setTimeout(step, holdTime);
+              return;
+            }
+            window.setTimeout(step, typeSpeed);
+          };
+          window.setTimeout(step, holdTime);
+        }
+      }
+    </script>
+      <meta name="reticle-pairing-token" content={pairingToken} />
+    <meta name="reticle-pairing-root" content={pairingRoot} />
+    <script>
+      import connectReticle from '../components/ReticleDev';
+      if (import.meta.env.DEV) {
+        connectReticle();
+      }
+    </script>
+</body>
+</html>

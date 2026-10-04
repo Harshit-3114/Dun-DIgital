@@ -1,0 +1,68 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import CapabilityList from '../../components/CapabilityList.astro';
+import PhotoStrip from '../../components/PhotoStrip.astro';
+import { services } from '../../data/content';
+
+const serviceCategories = ['All', ...Array.from(new Set(services.map((service) => service.category)))];
+---
+
+<SiteLayout title="Services" description="Explore Dun Digital's eight connected service lines across brand, social, media, web, PR, creators, shoots and events." activePath="/services">
+  <div data-inner-page>
+    <section class="page-hero section-wrap">
+      <span class="page-index" aria-hidden="true">02</span>
+      <div class="breadcrumbs motion-reveal"><ol><li><a href="/">Home</a></li><li>/</li><li aria-current="page">Services</li></ol></div>
+      <div class="motion-reveal" style="--motion-delay:80ms"><span class="sticker sticker-lime">Capabilities</span><h1>Eight ways to<br /><em>move a brand.</em></h1><p class="page-lede">Every service lives under one roof, so the work connects before it reaches the world.</p></div>
+    </section>
+
+    <div class="collection-controls section-wrap motion-reveal" data-service-controls role="group" aria-label="Filter services by category">
+      <span class="collection-controls-label">Filter services</span>
+      <div class="collection-control-list">
+        {serviceCategories.map((category) => <button type="button" data-service-filter={category} aria-pressed={category === 'All'} class:list={[category === 'All' && 'is-active']}>{category}</button>)}
+      </div>
+      <p class="sr-only" role="status" data-service-status></p>
+    </div>
+
+    <section class="services section-wrap motion-section">
+      <div class="section-heading motion-reveal"><h2>Built to work together.</h2><p>Choose the service you need, or bring us the whole brief. We will build the right mix.</p></div>
+      <CapabilityList services={services} />
+    </section>
+
+    <PhotoStrip title="Recent service work" frames={[
+      { image: '/gallery/comfort-point/image2.jpeg', caption: 'Hamper and gifting work for Comfort Point.' },
+      { image: '/gallery/igs/image1.jpeg', caption: 'Platform-native campaign creatives.' },
+      { image: '/gallery/ragam/image5.jpeg', caption: 'Collateral systems for Raagam Polymound.' },
+    ]} />
+
+    <section class="faq section-wrap motion-section">
+      <div class="faq-grid"><h2 class="motion-reveal">Less handoff, more momentum.</h2><div class="faq-column motion-reveal"><details class="faq-item" open><summary>Can we start with one service?</summary><p>Yes. Every engagement can begin with a focused service line and expand when the context calls for it.</p></details><details class="faq-item"><summary>Do you work with in-house teams?</summary><p>Often. We can act as the accountable lead, a specialist partner, or the extra pair of hands that keeps the work moving.</p></details><details class="faq-item"><summary>How do you measure the work?</summary><p>We agree the useful signals up front, then report against them with the clarity to decide what happens next.</p></details></div></div>
+    </section>
+
+    <section class="cta-teaser section-wrap motion-reveal"><h2>Make the next move clear.</h2><p>Tell us what you are building, launching or changing. We will bring the right mix of people and channels to the table.</p><button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button></section>
+  </div>
+</SiteLayout>
+
+<script>
+  const serviceControls = document.querySelector<HTMLElement>('[data-service-controls]');
+  const serviceItems = Array.from(document.querySelectorAll<HTMLElement>('[data-service-item]'));
+  const serviceStatus = serviceControls?.querySelector<HTMLElement>('[data-service-status]');
+  const announceServices = (filter: string) => {
+    const visible = serviceItems.filter((item) => filter === 'All' || item.dataset.serviceCategory === filter).length;
+    if (serviceStatus) serviceStatus.textContent = `Showing ${visible} of ${serviceItems.length} services.`;
+  };
+  serviceControls?.querySelectorAll<HTMLButtonElement>('[data-service-filter]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.serviceFilter ?? 'All';
+      serviceControls.querySelectorAll<HTMLButtonElement>('[data-service-filter]').forEach((control) => {
+        control.classList.toggle('is-active', control === button);
+        control.setAttribute('aria-pressed', String(control === button));
+      });
+      serviceItems.forEach((item) => {
+        const matches = filter === 'All' || item.dataset.serviceCategory === filter;
+        item.hidden = !matches;
+        if (matches) item.setAttribute('data-visible', '');
+      });
+      announceServices(filter);
+    });
+  });
+</script>

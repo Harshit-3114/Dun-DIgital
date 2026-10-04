@@ -1,0 +1,156 @@
+---
+import { services } from '../data/content';
+
+const endpoint = import.meta.env.PUBLIC_INQUIRY_ENDPOINT ?? '';
+---
+
+<dialog
+  id="inquiry-drawer"
+  class="m-0 ml-auto h-full max-h-none w-full max-w-xl translate-x-full border-0 bg-bone-cream p-0 text-forest-ink opacity-0 transition-[translate,opacity] duration-250 ease-editorial motion-reduce:transition-none backdrop:bg-carbon-black/60"
+  aria-labelledby="inquiry-title"
+>
+  <div class="flex min-h-full flex-col">
+    <div class="flex items-center justify-between border-b border-mist-gray px-6 py-5 md:px-10 md:py-6">
+      <p class="m-0 font-mono text-[10px] uppercase tracking-[0.1em] text-graphite">Dun Digital / Inquiry</p>
+      <button type="button" data-inquiry-close class="grid h-11 w-11 place-items-center rounded-full border border-forest-ink text-xl leading-none text-forest-ink outline-none transition-[background-color,color,transform] duration-150 ease-editorial hover:bg-carbon-black hover:text-bone-cream focus-visible:ring-2 focus-visible:ring-forest-ink active:scale-[0.97] motion-reduce:transition-none" aria-label="Close inquiry form">×</button>
+    </div>
+
+    <div class="flex-1 px-6 py-10 md:px-10 md:py-14">
+      <div class="mb-10 max-w-md">
+        <p class="mb-5 font-mono text-[10px] uppercase tracking-[0.1em] text-stone-taupe">Let’s make it move</p>
+        <h2 id="inquiry-title" class="m-0 text-[clamp(42px,6vw,70px)] font-light leading-[1.02] tracking-[-0.055em] text-carbon-black">Tell us what you’re building.</h2>
+        <p class="mt-6 max-w-[38ch] text-base leading-[1.38] tracking-[-0.02em] text-forest-ink">Share a little context and the right Dun Digital team will come back to you.</p>
+      </div>
+
+      <form data-inquiry-form data-endpoint={endpoint} class="space-y-6" novalidate>
+        <div class="grid gap-6 sm:grid-cols-2">
+          <label class="block text-sm text-forest-ink">Name <span class="text-graphite">*</span><input required name="name" autocomplete="name" minlength="2" maxlength="80" aria-describedby="name-error" class="mt-2 block w-full rounded-none border-0 border-b border-graphite/40 bg-transparent px-0 py-3 text-base text-carbon-black outline-none transition-[border-color] duration-150 placeholder:text-graphite/70 focus:border-carbon-black focus:ring-0" placeholder="Your name" /><span id="name-error" data-field-error class="field-error mt-2 block min-h-4 text-xs" role="alert"></span></label>
+          <label class="block text-sm text-forest-ink">Email <span class="text-graphite">*</span><input required type="email" name="email" autocomplete="email" maxlength="254" aria-describedby="email-error" class="mt-2 block w-full rounded-none border-0 border-b border-graphite/40 bg-transparent px-0 py-3 text-base text-carbon-black outline-none transition-[border-color] duration-150 placeholder:text-graphite/70 focus:border-carbon-black focus:ring-0" placeholder="you@company.com" /><span id="email-error" data-field-error class="field-error mt-2 block min-h-4 text-xs" role="alert"></span></label>
+        </div>
+        <div class="grid gap-6 sm:grid-cols-2">
+          <label class="block text-sm text-forest-ink">Phone <span class="text-graphite">(optional)</span><input type="tel" name="phone" autocomplete="tel" pattern="[0-9+()\s-]{7,20}" aria-describedby="phone-error" class="mt-2 block w-full rounded-none border-0 border-b border-graphite/40 bg-transparent px-0 py-3 text-base text-carbon-black outline-none transition-[border-color] duration-150 placeholder:text-graphite/70 focus:border-carbon-black focus:ring-0" placeholder="+91 …" /><span id="phone-error" data-field-error class="field-error mt-2 block min-h-4 text-xs" role="alert"></span></label>
+          <label class="block text-sm text-forest-ink">Company <span class="text-graphite">(optional)</span><input name="company" autocomplete="organization" maxlength="80" aria-describedby="company-error" class="mt-2 block w-full rounded-none border-0 border-b border-graphite/40 bg-transparent px-0 py-3 text-base text-carbon-black outline-none transition-[border-color] duration-150 placeholder:text-graphite/70 focus:border-carbon-black focus:ring-0" placeholder="Company or org" /><span id="company-error" data-field-error class="field-error mt-2 block min-h-4 text-xs" role="alert"></span></label>
+        </div>
+        <label class="block text-sm text-forest-ink">What do you need? <span class="text-graphite">(optional)</span>
+          <select name="service" aria-describedby="service-error" class="mt-2 block w-full rounded-none border-0 border-b border-graphite/40 bg-transparent px-0 py-3 text-base text-carbon-black outline-none transition-[border-color] duration-150 focus:border-carbon-black focus:ring-0">
+            <option value="">Select a service…</option>
+            {services.map((service) => <option value={service.title}>{service.title}</option>)}
+          </select>
+          <span id="service-error" data-field-error class="field-error mt-2 block min-h-4 text-xs" role="alert"></span>
+        </label>
+        <label class="block text-sm text-forest-ink">What can we help with?<textarea required name="message" maxlength="500" minlength="12" aria-describedby="message-error message-count" rows="4" class="mt-2 block w-full resize-y rounded-none border-0 border-b border-graphite/40 bg-transparent px-0 py-3 text-base text-carbon-black outline-none transition-[border-color] duration-150 placeholder:text-graphite/70 focus:border-carbon-black focus:ring-0" placeholder="A new brand, campaign, website, event..." /><span id="message-count" data-char-count class="mt-1 block text-right font-mono text-[10px] text-graphite">0 / 500</span><span id="message-error" data-field-error class="field-error mt-2 block min-h-4 text-xs" role="alert"></span></label>
+        {/* Honeypot: bots fill this, humans never see it */}
+        <label class="sr-only" aria-hidden="true">Website<input type="text" name="website" data-honeypot tabindex="-1" autocomplete="off" /></label>
+        <p data-form-error hidden class="rounded border border-[#c22e2e]/30 bg-[#c22e2e]/10 px-4 py-3 text-sm text-[#c22e2e]" role="alert"></p>
+        <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+          <p class="m-0 max-w-[28ch] text-xs leading-[1.4] text-graphite">We reply within 2 business days. Prefer email? <a class="underline" href="mailto:hello@dun.digital">hello@dun.digital</a></p>
+          <button type="submit" data-submit data-label="Send inquiry" class="rounded-full border border-carbon-black px-5 py-3 text-sm font-medium tracking-[-0.02em] text-carbon-black transition-[background-color,color,transform] duration-150 ease-editorial hover:bg-carbon-black hover:text-bone-cream focus-visible:ring-2 focus-visible:ring-forest-ink active:scale-[0.97] motion-reduce:transition-none disabled:cursor-wait disabled:opacity-60">Send inquiry</button>
+        </div>
+      </form>
+
+      <div data-inquiry-success data-form-success hidden class="max-w-md border-t border-mist-gray pt-8" role="status" aria-live="polite">
+        <p class="mb-3 font-mono text-[10px] uppercase tracking-[0.1em] text-stone-taupe">Message received</p>
+        <h3 class="m-0 text-3xl font-light tracking-[-0.05em] text-carbon-black">Thanks. We’ll take it from here.</h3>
+        <p class="mt-4 text-base leading-[1.38] text-forest-ink" data-success-copy>Your inquiry is with the Dun Digital team. We’ll reply within 2 business days.</p>
+        <button type="button" data-inquiry-close class="mt-7 rounded-full border border-carbon-black px-5 py-3 text-sm font-medium text-carbon-black transition-[background-color,color] duration-150 hover:bg-carbon-black hover:text-bone-cream focus-visible:ring-2 focus-visible:ring-forest-ink motion-reduce:transition-none">Close</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  #inquiry-drawer.is-open { translate:0 0; opacity:1; }
+  #inquiry-drawer.is-open::backdrop { opacity:1; }
+  #inquiry-drawer::backdrop { opacity:0; transition:opacity 250ms ease-out; }
+  @starting-style { #inquiry-drawer::backdrop { opacity:0; } }
+  #inquiry-drawer [data-field-error]:empty { display:block; }
+  #inquiry-drawer [aria-invalid="true"] { border-bottom-color:var(--error); }
+  #inquiry-drawer select[aria-invalid="true"] { border-bottom-color:var(--error); }
+  #inquiry-drawer [data-field-error] { color:var(--error); }
+  #inquiry-drawer .success-reveal { animation:inquiry-success-reveal 420ms cubic-bezier(.23,1,.32,1) both; }
+  @keyframes inquiry-success-reveal {
+    from { opacity:0; transform:translateY(14px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    #inquiry-drawer .success-reveal { animation:inquiry-success-fade 180ms ease-out both; }
+  }
+  @keyframes inquiry-success-fade {
+    from { opacity:0; }
+    to { opacity:1; }
+  }
+</style>
+
+<script>
+  import { initContactForm } from '../scripts/contact-form';
+
+  const drawer = document.querySelector<HTMLDialogElement>('#inquiry-drawer');
+  const form = drawer?.querySelector<HTMLFormElement>('[data-inquiry-form]');
+  const openers = document.querySelectorAll<HTMLElement>('[data-inquiry-open]');
+  const closeButtons = drawer?.querySelectorAll<HTMLElement>('[data-inquiry-close]');
+
+  const api = form ? initContactForm(form) : null;
+
+  let closeTimer: number | undefined;
+  let lastFocused: HTMLElement | null = null;
+
+  const lockScroll = () => {
+    // Defer so the mobile menu's close handler (which clears overflow) runs first.
+    window.setTimeout(() => {
+      document.body.style.overflow = 'hidden';
+    }, 60);
+  };
+  const unlockScroll = () => {
+    document.body.style.overflow = '';
+  };
+
+  const openDrawer = (event?: Event) => {
+    event?.preventDefault();
+    if (!drawer) return;
+    if (drawer.open && drawer.classList.contains('is-open')) return;
+    lastFocused = document.activeElement as HTMLElement | null;
+    window.clearTimeout(closeTimer);
+    if (api?.succeeded()) api.reset();
+    if (!drawer.open) drawer.showModal();
+    lockScroll();
+    requestAnimationFrame(() => drawer.classList.add('is-open'));
+    window.setTimeout(() => {
+      drawer.querySelector<HTMLElement>('input[name="name"]')?.focus();
+    }, 120);
+  };
+
+  const closeDrawer = () => {
+    if (!drawer || !drawer.open) return;
+    drawer.classList.remove('is-open');
+    unlockScroll();
+    closeTimer = window.setTimeout(() => {
+      drawer.close();
+      lastFocused?.focus?.();
+    }, 250);
+  };
+
+  // Minimal focus trap: keep Tab inside the open dialog.
+  drawer?.addEventListener('keydown', (event) => {
+    if (event.key !== 'Tab' || !drawer.open) return;
+    const focusables = Array.from(
+      drawer.querySelectorAll<HTMLElement>('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])'),
+    ).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null);
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  openers.forEach((opener) => opener.addEventListener('click', openDrawer));
+  closeButtons?.forEach((button) => button.addEventListener('click', closeDrawer));
+  drawer?.addEventListener('click', (event) => {
+    if (event.target === drawer) closeDrawer();
+  });
+  drawer?.addEventListener('cancel', (event) => { event.preventDefault(); closeDrawer(); });
+</script>

@@ -1,0 +1,18 @@
+{
+  "name": "Dun Digital",
+  "short_name": "Dun Digital",
+  "description": "Dun Digital — one accountable team for branding, social, advertising, websites, PR, shoots and live events.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4f5ef",
+  "theme_color": "#f4f5ef",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

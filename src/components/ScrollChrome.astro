@@ -1,0 +1,152 @@
+---
+interface Props {
+  activePath?: string;
+}
+
+const { activePath = '' } = Astro.props;
+const normalize = (p: string) => (p.endsWith('/') ? p : `${p}/`);
+const items = [
+  { href: '/', label: 'Home', match: (p: string) => normalize(p) === '/' },
+  { href: '/services/', label: 'Services', match: (p: string) => normalize(p).startsWith('/services/') },
+  { href: '/case-studies/', label: 'Work', match: (p: string) => normalize(p).startsWith('/case-studies/') },
+];
+---
+
+<nav class="thumb-dock" aria-label="Quick navigation">
+  <div class="thumb-dock-inner">
+    {items.map((item) => (
+      <a href={item.href} aria-current={item.match(activePath) ? 'page' : undefined}>{item.label}</a>
+    ))}
+    <button type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" class="thumb-dock-menu">Menu</button>
+    <button type="button" data-inquiry-open class="thumb-dock-cta">Start</button>
+  </div>
+</nav>
+
+<button type="button" class="to-top" data-to-top aria-label="Back to top" aria-hidden="true" tabindex="-1">
+  <span aria-hidden="true">↑</span>
+</button>
+
+<style>
+  .thumb-dock {
+    display:none;
+    position:fixed;
+    left:50%;
+    translate:-50% 0;
+    bottom:max(12px, env(safe-area-inset-bottom));
+    z-index:25;
+    width:min(480px, calc(100% - 24px));
+  }
+  .thumb-dock-inner {
+    display:flex;
+    align-items:center;
+    gap:2px;
+    background:rgba(255,243,230,.92);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border:1.5px solid var(--ink);
+    border-radius:999px;
+    padding:6px;
+    box-shadow:4px 4px 0 var(--ink);
+  }
+  .thumb-dock a, .thumb-dock-menu, .thumb-dock-cta {
+    flex:1;
+    display:grid;
+    place-items:center;
+    min-height:44px;
+    padding:8px 4px;
+    border-radius:999px;
+    border:1.5px solid transparent;
+    background:transparent;
+    color:var(--ink);
+    font-family:'DM Mono',monospace;
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    cursor:pointer;
+  }
+  .thumb-dock a[aria-current="page"] { background:var(--ink); color:var(--lime); border-color:var(--ink); }
+  .thumb-dock-menu[aria-expanded="true"] { background:var(--ink); color:var(--lime); border-color:var(--ink); }
+  .thumb-dock-cta { background:var(--tang); color:#fff; border-color:var(--ink); flex:1.2; }
+  .thumb-dock-cta:active { transform:scale(.96); }
+  .to-top {
+    display:none;
+    position:fixed;
+    right:16px;
+    bottom:calc(92px + env(safe-area-inset-bottom));
+    z-index:25;
+    width:48px;
+    height:48px;
+    place-items:center;
+    border-radius:999px;
+    background:var(--lime);
+    color:var(--ink);
+    border:1.5px solid var(--ink);
+    box-shadow:3px 3px 0 var(--ink);
+    font-size:20px;
+    cursor:pointer;
+    opacity:0;
+    translate:0 12px;
+    pointer-events:none;
+    transition:opacity 250ms var(--ease-out), translate 250ms var(--ease-out), background 180ms ease;
+  }
+  .to-top[data-visible] { opacity:1; translate:0 0; pointer-events:auto; }
+  .to-top:active { transform:scale(.94); }
+  @media (max-width:768px) {
+    .thumb-dock { display:block; }
+    .to-top { display:grid; }
+  }
+  @media (hover: none) {
+    .thumb-dock-cta:hover { background:var(--tang); color:#fff; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    .to-top { transition:opacity 180ms ease-out; translate:0 0; }
+    .thumb-dock-cta:active, .to-top:active { transform:none; }
+  }
+</style>
+
+<script>
+  const toTop = document.querySelector<HTMLElement>('[data-to-top]');
+  const footer = document.querySelector('.site-footer');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let footerVisible = false;
+  let ticking = false;
+
+  const updateTop = () => {
+    ticking = false;
+    if (!toTop) return;
+    const show = window.scrollY > 600 && !footerVisible;
+    if (show) {
+      toTop.setAttribute('data-visible', '');
+      toTop.setAttribute('aria-hidden', 'false');
+      toTop.removeAttribute('tabindex');
+    } else {
+      toTop.removeAttribute('data-visible');
+      toTop.setAttribute('aria-hidden', 'true');
+      toTop.setAttribute('tabindex', '-1');
+    }
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        updateTop();
+      });
+    }
+  }, { passive: true });
+
+  if (footer && 'IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      footerVisible = entries[0].isIntersecting;
+      updateTop();
+    }).observe(footer);
+  }
+
+  toTop?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+  });
+
+  updateTop();
+</script>

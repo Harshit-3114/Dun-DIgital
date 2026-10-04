@@ -1,0 +1,89 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PhotoStrip from '../components/PhotoStrip.astro';
+
+const partners = [
+  { initials: 'NJ', name: 'Nicky Jain', role: 'Client strategy & growth', bio: 'With 20 years of digital experience across Indian and global markets, Nicky leads client strategy, strategic partnerships and business development, driving long-term growth and market expansion.' },
+  { initials: 'SJ', name: 'Shikha Jain', role: 'Operations & delivery', bio: 'A seasoned entrepreneur with 15+ years of experience, Shikha leads operations and delivery, building efficient processes that ensure consistency, quality and seamless execution.' },
+  { initials: 'PS', name: 'Pooja Sathya Narayanan', role: 'Finance, administration & strategy', bio: 'Bringing over 15 years of entrepreneurial expertise, Pooja oversees finance, administration and business strategy while building strategic collaborations that strengthen the agency’s reach, capabilities and growth.' }
+];
+
+const promises = ['In-house strategy, design, content & media', 'One partner across every channel', 'Fixed scopes, benchmarked delivery'];
+---
+
+<SiteLayout title="About us" description="Meet Dun Digital, one accountable team for brand, media, PR, digital and live experiences." activePath="/about">
+  <div data-inner-page>
+    <section class="page-hero section-wrap">
+      <span class="page-index" aria-hidden="true">01</span>
+      <div class="breadcrumbs motion-reveal"><ol><li><a href="/">Home</a></li><li>/</li><li aria-current="page">About us</li></ol></div>
+      <div class="motion-reveal" style="--motion-delay:80ms"><span class="sticker sticker-bubble">Our story</span><h1>One partner.<br /><em>One point of view.</em></h1><p class="page-lede">Dun Digital was founded in Chennai in 2024, for brands, institutions and industry bodies that need every channel to pull in the same direction.</p></div>
+    </section>
+
+    <PhotoStrip title="Studio work in the wild" frames={[
+      { image: '/gallery/ragam/image1.jpeg', caption: 'Brand system details for Raagam Polymound.' },
+      { image: '/gallery/guntupalli/image3.jpeg', caption: 'Retainer content for Guntupalli Marbles.' },
+      { image: '/gallery/textile-summit/PHOTO-2026-01-16-13-46-16.jpg', caption: 'On-ground at an industry summit.' },
+    ]} />
+
+    <section class="intro section-wrap motion-section">
+      <div class="intro-grid motion-reveal"><h2>One operating system for the brand.</h2><div class="intro-copy"><p>Design, media, PR, content, websites and events should not feel like separate vendors passing work across a table. They should feel like one operating system for the brand.</p><p>That is the role we take: get close to the context, make the idea clear, then carry it with discipline from first brief to final report.</p><button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button></div></div>
+      <ul class="promise-row motion-reveal motion-stagger" aria-label="Our promise">
+        {promises.map((promise) => <li><i aria-hidden="true">✳</i>{promise}</li>)}
+      </ul>
+    </section>
+
+    <section class="partners section-wrap motion-section" id="partners">
+      <h2 class="motion-reveal">Three partners. One accountable team.</h2>
+      <ol class="kinetic-list motion-reveal motion-stagger">
+        {partners.map((partner, index) => (
+          <li data-open={index === 0 ? '' : undefined}>
+            <button type="button" class="k-head" data-k-toggle aria-expanded={index === 0 ? 'true' : 'false'}>
+              <span class="k-index" aria-hidden="true">0{index + 1}</span>
+              <span class="k-name">{partner.name}</span>
+              <span class="k-role">{partner.role}</span>
+              <span class="k-plus" aria-hidden="true">+</span>
+            </button>
+            <div class="k-panel">
+              <div class="k-panel-inner">
+                <div class="k-panel-body">
+                  <span class="partner-mark" aria-hidden="true">{partner.initials}</span>
+                  <p class="partner-bio">{partner.bio}</p>
+                  <a class="k-mail" href={`mailto:hello@dun.digital?subject=Hello ${partner.name.split(' ')[0]}`}>Talk to {partner.name.split(' ')[0]} →</a>
+                </div>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="engage section-wrap motion-section">
+      <div class="work-heading motion-reveal"><span class="sticker sticker-lime">Engagements</span><h2>Three ways to work together.</h2><p>Pick the shape that fits the brief. Every shape keeps the same promise: one team, fixed scope, benchmarked delivery.</p></div>
+      <div class="coord-grid motion-reveal motion-stagger">
+        <div class="spot"><span>01</span><strong>Start with one service</strong><p>Begin with a focused line — branding, content, media, whatever hurts most — and expand when the context calls for it.</p></div>
+        <div class="spot"><span>02</span><strong>Run an always-on retainer</strong><p>A steady rhythm of content, media and reporting. The way Raagam Polymound and Guntupalli Marbles run today.</p></div>
+        <div class="spot"><span>03</span><strong>Plug into your team</strong><p>We slot in as the accountable lead, a specialist partner, or the extra hands that keep the work moving.</p></div>
+      </div>
+      <blockquote class="belief motion-reveal">
+        <p>“Good work gets clearer when the people making it are in the same room.”</p>
+        <footer><span>Dun Digital principle 01</span><span>Context before output</span></footer>
+      </blockquote>
+    </section>
+
+    <section class="cta-teaser section-wrap motion-reveal"><h2>Bring us the messy bit.</h2><p>We will help turn it into a clear next move, then bring the right mix of people and channels to the table.</p><button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button></section>
+  </div>
+</SiteLayout>
+
+<script>
+  // Kinetic list: independent accordion rows revealing bio + contact.
+  document.querySelectorAll<HTMLButtonElement>('[data-k-toggle]').forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const row = toggle.closest('li');
+      if (!row) return;
+      const open = row.hasAttribute('data-open');
+      if (open) row.removeAttribute('data-open');
+      else row.setAttribute('data-open', '');
+      toggle.setAttribute('aria-expanded', String(!open));
+    });
+  });
+</script>

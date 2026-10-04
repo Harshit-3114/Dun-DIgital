@@ -1,0 +1,72 @@
+---
+interface StripFrame {
+  image: string;
+  caption: string;
+}
+
+interface Props {
+  title: string;
+  frames: StripFrame[];
+}
+
+const { title, frames } = Astro.props;
+---
+
+<section class="photo-strip section-wrap motion-section" aria-label={title}>
+  <div class="photo-track motion-reveal motion-stagger">
+    {frames.map((frame, index) => (
+      <figure>
+        <div class="photo-frame" data-frame-stage>
+          <img src={frame.image} alt="" loading="lazy" decoding="async" data-frame-image />
+          <span class="frame-skeleton" data-frame-skeleton></span>
+          <b>{String(index + 1).padStart(2, '0')}</b>
+        </div>
+        <figcaption>{frame.caption}</figcaption>
+      </figure>
+    ))}
+  </div>
+</section>
+
+<style>
+  .photo-strip { padding:20px 0 120px; }
+  .photo-track { display:grid; grid-template-columns:repeat(3, 1fr); gap:22px; }
+  .photo-track figure { margin:0; }
+  .photo-track figure:nth-child(1) { rotate:-.8deg; }
+  .photo-track figure:nth-child(3) { rotate:.8deg; }
+  .photo-frame { position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--ink); border:2px solid var(--ink); border-radius:20px; box-shadow:5px 5px 0 var(--ink); }
+  .photo-track figure:nth-child(1) .photo-frame { box-shadow:5px 5px 0 var(--tang); }
+  .photo-track figure:nth-child(2) .photo-frame { box-shadow:5px 5px 0 var(--grape); }
+  .photo-track figure:nth-child(3) .photo-frame { box-shadow:5px 5px 0 var(--sun); }
+  .photo-frame img[data-frame-image] { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; filter:blur(6px); transition:opacity 500ms ease, filter 500ms ease; }
+  .photo-frame.is-loaded img[data-frame-image] { opacity:1; filter:blur(0); }
+  .frame-skeleton { position:absolute; inset:16px; border:1px solid rgba(255,243,230,.4); overflow:hidden; pointer-events:none; }
+  .frame-skeleton::before { content:''; position:absolute; inset:0; translate:-100% 0; background:linear-gradient(100deg, transparent 20%, rgba(212,245,66,.25) 50%, transparent 80%); animation:skeleton-sweep 1.8s var(--ease-out) infinite; }
+  @keyframes skeleton-sweep { to { translate:100% 0; } }
+  .photo-frame.is-loaded .frame-skeleton { display:none; }
+  .photo-frame b { position:absolute; bottom:12px; right:18px; z-index:2; font-family:var(--font-display); font-size:44px; font-weight:800; color:var(--sun); }
+  .photo-track figcaption { margin-top:14px; color:var(--plum); font-size:13px; line-height:1.5; max-width:36ch; }
+  @media (hover:hover) and (pointer:fine) {
+    .photo-frame img[data-frame-image] { transition:opacity 500ms ease, filter 500ms ease, transform 600ms var(--ease-out); }
+    .photo-track figure:hover .photo-frame img[data-frame-image] { transform:scale(1.04); }
+  }
+  @media (max-width:768px) {
+    .photo-strip { padding:10px 0 90px; }
+    .photo-track { grid-template-columns:1fr; gap:26px; }
+    .photo-track figure:nth-child(n) { rotate:0; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    .frame-skeleton::before { animation:none; }
+    .photo-frame img[data-frame-image] { transition:none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLImageElement>('[data-frame-image]').forEach((img) => {
+    // Scoped to photo strips: gallery frames handle their own reveal.
+    if (!img.closest('.photo-strip')) return;
+    const stage = img.closest<HTMLElement>('[data-frame-stage]');
+    if (img.complete && img.naturalWidth > 0) stage?.classList.add('is-loaded');
+    img.addEventListener('load', () => stage?.classList.add('is-loaded'));
+    img.addEventListener('error', () => img.remove());
+  });
+</script>

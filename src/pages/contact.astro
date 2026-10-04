@@ -1,0 +1,52 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import PhotoStrip from '../components/PhotoStrip.astro';
+
+const googleFormEmbedUrl = import.meta.env.PUBLIC_GOOGLE_FORM_EMBED_URL;
+---
+
+<SiteLayout title="Contact" description="Start a conversation with Dun Digital about your next brand, campaign, website, event or digital challenge." activePath="/contact/">
+  <div data-inner-page>
+    <section class="page-hero section-wrap">
+      <span class="page-index">04</span>
+      <div class="breadcrumbs motion-reveal"><ol><li><a href="/">Home</a></li><li>/</li><li aria-current="page">Contact</li></ol></div>
+      <div class="motion-reveal" style="--motion-delay:80ms"><span class="sticker sticker-grape">✳ Contact</span><h1>Bring us the<br /><em>next move.</em></h1><p class="page-lede">Tell us what you are building, launching or changing. We will come back with the right mix of people and channels for it.</p></div>
+    </section>
+
+    <section class="contact section-wrap motion-reveal"><div class="contact-orbit"><div class="orbit-core">DUN<br /><small>DIGITAL</small></div></div><div class="contact-copy"><h2>Start with the context.</h2><p>Share a little context and the right Dun Digital team will come back to you. No obligation, no jargon.</p><button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button><p class="contact-alt">Prefer email? <a href="mailto:hello@dun.digital">hello@dun.digital</a></p></div></section>
+
+    <section class="lead-form-section section-wrap motion-section">
+      <div class="lead-form-grid">
+        <div class="motion-reveal"><span class="sticker sticker-bubble">Project inquiry</span><h2>Tell us everything.</h2><p class="lead-form-lede">The more context you share, the sharper our first reply. Pick the services, set a range, and tell the story — two minutes, tops.</p></div>
+        <div class="lead-form-card motion-reveal"><ContactForm /></div>
+      </div>
+    </section>
+
+    <section class="intro section-wrap motion-section">
+      <div class="coord-grid motion-reveal motion-stagger">
+        <div class="spot"><span>01</span><strong>Email us</strong><p><a href="mailto:hello@dun.digital">hello@dun.digital</a> — we reply within 2 business days.</p></div>
+        <div class="spot"><span>02</span><strong>Find us</strong><p>Based in Chennai, India. One team, one point of contact, wherever you are.</p></div>
+        <div class="spot"><span>03</span><strong>Send context</strong><p>What you are building, launching or changing — timelines and channels help, if you know them.</p></div>
+      </div>
+    </section>
+
+    <PhotoStrip title="The work you would be buying" frames={[
+      { image: '/gallery/comfort-point/image3.jpeg', caption: 'Gifting and launch work for Comfort Point.' },
+      { image: '/gallery/ragam/image6.jpeg', caption: 'Manufacturing brand content that sells.' },
+      { image: '/gallery/igs/image2.jpeg', caption: 'Social-first campaign creatives.' },
+    ]} />
+
+    <section class="faq section-wrap motion-section">
+      <div class="faq-grid"><h2 class="motion-reveal">Before you write.</h2><div class="faq-column motion-reveal"><details class="faq-item" open><summary>How fast will you reply?</summary><p>Within 2 business days, with the right mix of people and channels for what you described — or a straight answer if we are not the fit.</p></details><details class="faq-item"><summary>Can we start small?</summary><p>Yes. Every engagement can begin with a focused service line and expand when the context calls for it.</p></details><details class="faq-item"><summary>Do you work with in-house teams?</summary><p>Often. We can act as the accountable lead, a specialist partner, or the extra pair of hands that keeps the work moving.</p></details></div></div>
+    </section>
+
+    {googleFormEmbedUrl && (
+      <section class="google-form-section section-wrap motion-section">
+        <div class="google-form-grid"><div class="motion-reveal"><h2>Use your own endpoint.</h2><p class="google-form-copy">Prefer to send this through your own form? Submit below, or use the conversation form above.</p></div>
+          <div class="google-form-frame motion-reveal"><iframe src={googleFormEmbedUrl} title="Dun Digital contact form" loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-forms allow-scripts allow-same-origin allow-popups"></iframe></div>
+        </div>
+      </section>
+    )}
+  </div>
+</SiteLayout>

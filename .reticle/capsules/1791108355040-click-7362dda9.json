@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "origin": "failed-assert",
+  "expected": "text \"Built for the\" AND console",
+  "observed": "no element matched {\"text\":\"Built for the\"} in state 'visible' — that text IS on the page, split across the children of heading 'Built for the real world.' — no single element's own text carries it, so no text query can match it; retry as {\"kind\":\"text\",\"contains\":\"Built for the\",\"scope\":\"e950\",\"self\":true}",
+  "steps": [
+    {
+      "tool": "reticle_act",
+      "anchor": {
+        "kind": "testid",
+        "value": ""
+      },
+      "action": "click"
+    }
+  ],
+  "id": "1791108355040-click-7362dda9",
+  "createdAt": 1791108355042,
+  "seen": 1,
+  "lastSeenAt": 1791108355042
+}

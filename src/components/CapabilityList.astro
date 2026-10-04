@@ -1,0 +1,57 @@
+---
+interface Capability {
+  slug: string;
+  number: string;
+  category?: string;
+  title: string;
+  detail: string;
+  deliverables?: string[];
+}
+
+interface Props {
+  services: Capability[];
+}
+
+const { services } = Astro.props;
+---
+
+<div class="border-t border-mist-gray" aria-label="Dun Digital capabilities">
+  {services.map((service) => (
+    <article data-service-item data-service-category={service.category ?? 'All'} class="service-row motion-reveal motion-row group grid grid-cols-[2rem_minmax(0,1fr)_1.15fr_1.5rem] items-center gap-3 border-b border-mist-gray py-5 text-forest-ink transition-[translate,background-color] duration-200 ease-editorial motion-reduce:transition-none md:grid-cols-[3rem_minmax(170px,1fr)_1.1fr_2rem] md:gap-5 md:py-6 hover:bg-stone-taupe/20 focus-within:bg-stone-taupe/20 md:hover:translate-x-1">
+      <span class="font-mono text-[10px] tracking-[0.08em] text-graphite md:text-[11px]">{service.number}</span>
+      <h3 class="m-0 text-[18px] font-normal tracking-[-0.04em] md:text-[21px]">{service.title}</h3>
+      <p class="col-start-2 col-end-5 m-0 text-[13px] leading-[1.45] text-graphite md:col-auto">{service.detail}</p>
+      <a
+        class="col-start-4 row-start-1 relative flex h-8 w-8 items-center justify-end text-[22px] text-forest-ink transition-[translate,color] duration-200 ease-editorial motion-reduce:transition-none after:absolute after:-inset-2 after:content-[''] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest-ink md:h-9 md:w-9 md:justify-center md:rounded-full md:border md:border-transparent md:group-hover:border-forest-ink md:focus-visible:border-forest-ink"
+        href={`/services/${service.slug}/`}
+        aria-label={`Learn more about ${service.title}`}
+      >
+        <span aria-hidden="true" class="grid h-5 w-5 place-items-center rounded-full border border-current text-[11px] leading-none transition-[background-color,color] duration-200 ease-editorial motion-reduce:transition-none group-hover:bg-forest-ink group-hover:text-bone-cream">→</span>
+      </a>
+      {service.deliverables && service.deliverables.length > 0 && (
+        <div class="service-more"><div><span>Includes: {service.deliverables.join(' · ')}</span></div></div>
+      )}
+    </article>
+  ))}
+</div>
+
+<style>
+  .service-more { grid-column:1 / -1; display:grid; grid-template-rows:0fr; transition:grid-template-rows 300ms var(--ease-out); }
+  .service-more > div { overflow:hidden; min-height:0; }
+  .service-more span { display:block; padding-bottom:2px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.02em; color:var(--muted); }
+  .service-row:hover .service-more, .service-row:focus-within .service-more { grid-template-rows:1fr; }
+  /* Touch has no hover: the differentiator copy is always visible,
+     and the hover-only card treatment is undone. */
+  @media (hover: none) {
+    .service-more { grid-template-rows:1fr; }
+    .service-row:hover, .service-row:focus-within { background:transparent; box-shadow:none; border-bottom-color:var(--line); }
+  }
+  .service-row { border-radius:18px; padding-inline:14px; }
+  .service-row:hover, .service-row:focus-within { background:var(--card); border-color:var(--ink); box-shadow:4px 4px 0 var(--ink); }
+  .service-row > span:first-child { display:grid; place-items:center; width:2.2rem; height:2.2rem; border-radius:12px; background:var(--lime); border:1.5px solid var(--ink); color:var(--ink); font-weight:700; rotate:-3deg; }
+  .service-row:nth-child(2n) > span:first-child { background:var(--sun); rotate:2deg; }
+  .service-row:nth-child(3n) > span:first-child { background:var(--bubble); rotate:-2deg; }
+  .service-row:nth-child(4n) > span:first-child { background:var(--tang); color:#fff; rotate:3deg; }
+  @media (min-width:768px) { .service-row > span:first-child { width:2.6rem; height:2.6rem; } }
+  @media (prefers-reduced-motion:reduce) { .service-more { transition:none; } }
+</style>

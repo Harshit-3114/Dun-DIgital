@@ -1,0 +1,216 @@
+---
+interface GalleryFrame {
+  label: string;
+  title: string;
+  caption: string;
+  client?: string;
+  image?: string;
+}
+
+interface Props {
+  frames: GalleryFrame[];
+}
+
+const { frames } = Astro.props;
+---
+
+<section class="gallery" id="gallery" role="region" aria-label="Dun Digital gallery">
+  <div class="gallery-head section-wrap motion-reveal">
+    <div><span class="sticker sticker-lime">Fresh from the feed</span><h3>The work in motion</h3></div>
+    <div class="gallery-indicator" aria-hidden="true">
+      <span class="indicator-count"><b data-gallery-current>01</b> / {String(frames.length).padStart(2, '0')}</span>
+      <span class="indicator-line"><span class="indicator-progress" data-gallery-progress></span></span>
+    </div>
+    <div class="gallery-nav">
+      <button type="button" data-gallery-prev aria-label="Previous frame">←</button>
+      <button type="button" data-gallery-next aria-label="Next frame">→</button>
+    </div>
+  </div>
+  <div class="gallery-strip" data-gallery-strip tabindex="0" aria-label="Gallery frames, scroll horizontally">
+    <div class="gallery-track">
+      {frames.map((frame, index) => (
+        <article class="gallery-frame motion-reveal" data-gallery-frame aria-label={`${frame.label} · ${frame.title}`}>
+          <div class="frame-stage" data-frame-stage>
+            <span class="frame-label">{frame.label}{frame.client ? <em> · {frame.client}</em> : null}</span>
+            {frame.image ? (
+              <img src={frame.image} alt="" loading="lazy" decoding="async" data-frame-image />
+            ) : (
+              <span class="frame-placeholder">Campaign visual placeholder</span>
+            )}
+            <span class="frame-skeleton" data-frame-skeleton></span>
+            <b class="frame-number">{String(index + 1).padStart(2, '0')}</b>
+          </div>
+          <div class="frame-caption">
+            <strong>{frame.title}</strong>
+            <span>{frame.caption}</span>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery { padding:96px 0 150px; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); background:var(--sun); rotate:-.6deg; scale:1.01; }
+  .gallery-head { display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:16px; margin-bottom:44px; }
+  .gallery-head h3 { margin:14px 0 0; font-size:clamp(24px, 2.6vw, 30px); font-weight:800; letter-spacing:-.025em; color:var(--ink); }
+  .gallery-indicator { display:flex; flex-direction:column; align-items:end; gap:10px; font-family:'DM Mono',monospace; font-size:11px; font-weight:700; color:var(--ink); white-space:nowrap; background:var(--paper); border:1.5px solid var(--ink); border-radius:14px; padding:10px 14px; box-shadow:3px 3px 0 var(--ink); }
+  .gallery-nav { display:flex; gap:8px; }
+  .gallery-nav button { display:grid; place-items:center; width:44px; height:44px; border-radius:999px; background:var(--paper); border:1.5px solid var(--ink); color:var(--ink); font-size:18px; cursor:pointer; box-shadow:3px 3px 0 var(--ink); transition:background 180ms ease, translate 180ms var(--ease-out); }
+  .gallery-nav button:hover { background:var(--ink); color:var(--lime); translate:0 -1px; }
+  .gallery-nav button:active { translate:0 1px; box-shadow:1px 1px 0 var(--ink); }
+  .gallery-nav button:focus-visible { outline:2px solid var(--grape); outline-offset:2px; }
+  .indicator-count b { color:var(--tang); font-weight:700; }
+  .indicator-line { position:relative; display:block; width:120px; height:4px; background:rgba(26,16,37,.15); border-radius:999px; }
+  .indicator-progress { position:absolute; left:0; top:0; height:4px; width:16.666%; background:var(--grape); border-radius:999px; transition:translate 300ms var(--ease-out); }
+  .gallery-strip { overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; cursor:grab; -webkit-overflow-scrolling:touch; }
+  .gallery-strip::-webkit-scrollbar { display:none; }
+  .gallery-strip:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
+  .gallery-strip.is-dragging { cursor:grabbing; scroll-snap-type:none; scroll-behavior:auto; user-select:none; }
+  .gallery-track { display:flex; gap:24px; width:max-content; padding-inline:max(24px, calc((100vw - 1320px) / 2)); perspective:1400px; }
+  .gallery-frame { scroll-snap-align:center; width:min(78vw, 560px); flex-shrink:0; transform-style:preserve-3d; transition:opacity 400ms ease, scale 400ms var(--ease-out); }
+  .gallery-frame.is-dim { opacity:.45; scale:.985; }
+  .frame-stage { position:relative; display:grid; place-items:center; aspect-ratio:4/3; background:var(--ink); color:var(--paper); overflow:hidden; border:2px solid var(--ink); border-radius:20px; box-shadow:5px 5px 0 var(--ink); }
+  .gallery-frame:nth-child(odd) .frame-stage { rotate:-.7deg; }
+  .gallery-frame:nth-child(even) .frame-stage { rotate:.7deg; }
+  .frame-label { position:absolute; top:16px; left:16px; z-index:2; font-family:'DM Mono',monospace; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--ink); background:var(--lime); padding:5px 12px; border-radius:999px; max-width:70%; }
+  .frame-label em { font-style:normal; opacity:.65; }
+  .frame-number { position:absolute; bottom:12px; right:18px; z-index:2; font-family:var(--font-display); font-size:54px; font-weight:800; letter-spacing:-.04em; color:var(--sun); transition:color 250ms ease; }
+  .frame-placeholder { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.12em; color:var(--paper); }
+  .frame-stage img[data-frame-image] { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; filter:blur(6px); transition:opacity 500ms ease, filter 500ms ease; }
+  .frame-stage.is-loaded img[data-frame-image] { opacity:1; filter:blur(0); }
+  .frame-skeleton { position:absolute; inset:16px; border:1px solid rgba(255,243,230,.45); overflow:hidden; pointer-events:none; z-index:1; }
+  .frame-skeleton::before { content:''; position:absolute; inset:0; translate:-100% 0; background:linear-gradient(100deg, transparent 20%, rgba(212,245,66,.25) 50%, transparent 80%); animation:skeleton-sweep 1.8s var(--ease-out) infinite; }
+  @keyframes skeleton-sweep { to { translate:100% 0; } }
+  .frame-stage.is-loaded .frame-skeleton { display:none; }
+  .frame-caption { display:flex; flex-direction:column; gap:6px; margin-top:16px; }
+  .frame-caption strong { font-size:20px; font-weight:400; letter-spacing:-.04em; color:var(--ink); transition:color 200ms ease; }
+  .frame-caption span { color:var(--ink-slate); font-size:13px; line-height:1.45; max-width:44ch; }
+  @media (hover:hover) and (pointer:fine) {
+    .frame-stage img[data-frame-image] { transition:opacity 500ms ease, filter 500ms ease, transform 600ms var(--ease-out); }
+    .gallery-frame:hover .frame-stage img[data-frame-image] { transform:scale(1.04); will-change:transform; }
+    .gallery-frame:hover .frame-number { color:rgba(255,243,230,.92); }
+    .gallery-frame:hover .frame-caption strong { color:var(--tang); }
+  }
+  @media (min-width:769px) { .gallery-frame { width:min(38vw, 560px); } }
+  @media (hover:none) {
+    .gallery-frame:hover .frame-stage img[data-frame-image] { transform:none; }
+    .gallery-frame:hover .frame-number { color:var(--sun); }
+    .gallery-frame:hover .frame-caption strong { color:var(--ink); }
+    .gallery-nav button:hover { background:var(--paper); color:var(--ink); translate:0 0; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    .gallery { rotate:0; scale:1; }
+    .gallery-frame .frame-stage { rotate:0; }
+    .gallery-frame.is-dim { opacity:1; scale:1; }
+    .frame-skeleton::before { animation:none; }
+    .frame-stage img[data-frame-image] { transition:none; }
+    .indicator-progress { transition:none; }
+    .frame-number, .frame-caption strong { transition:none; }
+    @media (hover:hover) and (pointer:fine) {
+      .gallery-frame:hover .frame-stage img[data-frame-image] { transform:none; }
+    }
+  }
+</style>
+
+<script>
+  const strip = document.querySelector<HTMLElement>('[data-gallery-strip]');
+  const frames = Array.from(document.querySelectorAll<HTMLElement>('[data-gallery-frame]'));
+  const current = document.querySelector<HTMLElement>('[data-gallery-current]');
+  const progress = document.querySelector<HTMLElement>('[data-gallery-progress]');
+
+  const setActive = (index: number) => {
+    if (current) current.textContent = String(index + 1).padStart(2, '0');
+    if (progress && frames.length > 0) {
+      progress.style.width = `${100 / frames.length}%`;
+      progress.style.translate = `${index * 100}% 0`;
+    }
+    // Spotlight: the centered frame carries full presence, the rest recede.
+    frames.forEach((frame, i) => frame.classList.toggle('is-dim', i !== index));
+  };
+
+  let ticking = false;
+  const coverflowMotion = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const updateActive = () => {
+    ticking = false;
+    if (!strip || frames.length === 0) return;
+    const center = strip.scrollLeft + strip.clientWidth / 2;
+    let best = 0;
+    let bestDist = Infinity;
+    frames.forEach((frame, index) => {
+      const frameCenter = frame.offsetLeft + frame.offsetWidth / 2;
+      const dist = Math.abs(frameCenter - center);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = index;
+      }
+      // Coverflow: tilt away from the viewport center by lateral offset.
+      if (coverflowMotion) {
+        const off = (frameCenter - center) / strip.clientWidth;
+        const deg = Math.max(-22, Math.min(22, off * 44));
+        frame.style.transform = `rotateY(${deg.toFixed(1)}deg)`;
+      }
+    });
+    setActive(best);
+  };
+
+  strip?.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(updateActive);
+    }
+  }, { passive: true });
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const stepFrame = (dir: number) => {
+    if (!strip || frames.length === 0) return;
+    const w = frames[0].offsetWidth + 24;
+    strip.scrollBy({ left: dir * w, behavior: reducedMotion ? 'auto' : 'smooth' });
+  };
+  document.querySelector('[data-gallery-prev]')?.addEventListener('click', () => stepFrame(-1));
+  document.querySelector('[data-gallery-next]')?.addEventListener('click', () => stepFrame(1));
+  strip?.addEventListener('keydown', (event: KeyboardEvent) => {
+    if (event.key === 'ArrowLeft') { event.preventDefault(); stepFrame(-1); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); stepFrame(1); }
+  });
+
+  let dragging = false;
+  let startX = 0;
+  let startScroll = 0;
+
+  const endDrag = (event?: PointerEvent) => {
+    if (!dragging || !strip) return;
+    dragging = false;
+    strip.classList.remove('is-dragging');
+    if (event && strip.hasPointerCapture(event.pointerId)) {
+      strip.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  strip?.addEventListener('pointerdown', (event: PointerEvent) => {
+    if (!strip || event.pointerType !== 'mouse' || event.button !== 0) return;
+    dragging = true;
+    startX = event.clientX;
+    startScroll = strip.scrollLeft;
+    strip.classList.add('is-dragging');
+    strip.setPointerCapture(event.pointerId);
+  });
+  strip?.addEventListener('pointermove', (event: PointerEvent) => {
+    if (!dragging || !strip) return;
+    strip.scrollLeft = startScroll - (event.clientX - startX);
+  });
+  strip?.addEventListener('pointerup', endDrag);
+  strip?.addEventListener('pointercancel', endDrag);
+  strip?.addEventListener('lostpointercapture', endDrag);
+  window.addEventListener('blur', () => endDrag());
+
+  document.querySelectorAll<HTMLImageElement>('[data-frame-image]').forEach((img) => {
+    const stage = img.closest<HTMLElement>('[data-frame-stage]');
+    if (img.complete && img.naturalWidth > 0) stage?.classList.add('is-loaded');
+    img.addEventListener('load', () => stage?.classList.add('is-loaded'));
+    img.addEventListener('error', () => img.remove());
+  });
+
+  updateActive();
+</script>

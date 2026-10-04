@@ -1,0 +1,121 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { services, cases, industries } from '../data/content';
+
+const galleryFrames = [
+  { label: 'Brand systems', client: 'Raagam Polymound', title: 'Identity, end to end', caption: 'Logos, guidelines and collaterals built as one system for a polymer manufacturer.', image: '/gallery/ragam/image0.jpeg' },
+  { label: 'Social & content', client: 'Raagam Polymound', title: 'Calendars that move', caption: 'Always-on content built for distributors and industrial buyers.', image: '/gallery/ragam/image3.jpeg' },
+  { label: 'Social & content', client: 'Guntupalli Marbles', title: 'A presence with rhythm', caption: 'Retainer content planned a month ahead, with room to react to festivals.', image: '/gallery/guntupalli/image0.jpeg' },
+  { label: 'Product creatives', client: 'Guntupalli Marbles', title: 'Shot for the feed', caption: 'Product-first social creatives from an always-on engagement.', image: '/gallery/guntupalli/image5.jpeg' },
+  { label: 'PR & hampers', client: 'Comfort Point', title: 'Stories that land', caption: 'Press outreach, gifting and launch coordination as one motion.', image: '/gallery/comfort-point/image0.jpeg' },
+  { label: 'PR & hampers', client: 'Comfort Point', title: 'A memorable touchpoint', caption: 'Hamper campaigns designed to open doors with media and stakeholders.', image: '/gallery/comfort-point/image1.jpeg' },
+  { label: 'Live events', client: 'Industry summit', title: 'Captured live', caption: 'On-ground coverage for industry-body summits and exhibitions.', image: '/gallery/textile-summit/PHOTO-2026-01-20-08-10-39.jpg' },
+  { label: 'Live events', client: 'Industry summit', title: 'One coordinated sprint', caption: 'Branding, live updates and speaker content carrying a single voice.', image: '/gallery/textile-summit/PHOTO-2026-01-02-17-00-15.jpg' },
+  { label: 'Social & content', title: 'Platform-native work', caption: 'Selected campaign creatives built for the formats people actually watch.', image: '/gallery/igs/image0.jpeg' },
+  { label: 'Campaign creatives', title: 'Made for the moment', caption: 'Selected occasion-led creatives from recent months of client work.', image: '/gallery/iplas/PHOTO-2026-03-17-10-48-27.jpg' }
+];
+
+const method = [
+  { step: '01', name: 'Discover', note: 'Audit the brand, audience and landscape.' },
+  { step: '02', name: 'Strategize', note: 'Channel plan and benchmark targets.' },
+  { step: '03', name: 'Create', note: 'Branding, content and collaterals.' },
+  { step: '04', name: 'Amplify', note: 'Paid media, influencer and PR, live.' },
+  { step: '05', name: 'Report', note: 'Performance readout against benchmarks.' }
+];
+
+import CapabilityList from '../components/CapabilityList.astro';
+import CaseStudyGrid from '../components/CaseStudyGrid.astro';
+import GallerySection from '../components/GallerySection.astro';
+---
+
+<SiteLayout title="One agency. Every channel." description="Dun Digital · one accountable team for branding, social, advertising, websites, PR, shoots and live events." activePath="/">
+  <section class="hero section-wrap">
+    <div class="hero-copy reveal">
+      <span class="sticker">✳ Chennai studio · since 2024</span>
+      <h1>One agency.<br /><span class="typewriter" data-typewriter aria-hidden="true" data-words='["Every channel.","Every campaign.","Every launch.","Every feed."]'>Every channel.</span><span class="sr-only">Every channel. Every campaign. Every launch. Every feed.</span></h1>
+      <p class="hero-lede">A single accountable team for brands that need their digital presence to move as one, from first idea to final report.</p>
+      <button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button>
+    </div>
+    <div class="hero-art reveal reveal-delay" aria-label="Selected Dun Digital campaign work">
+      <div class="hero-art-top"><span>Selected work</span><span>DD / 001</span></div>
+      <div class="hero-mosaic" aria-hidden="true">
+        <figure class="mosaic-tile mosaic-main"><img src="/gallery/ragam/image4.jpeg" alt="" loading="eager" fetchpriority="high" decoding="async" data-cycle="/gallery/ragam/image0.jpeg|/gallery/ragam/image1.jpeg" /><figcaption>Brand systems · Raagam Polymound</figcaption></figure>
+        <figure class="mosaic-tile"><img src="/gallery/guntupalli/image2.jpeg" alt="" loading="eager" decoding="async" data-cycle="/gallery/guntupalli/image0.jpeg|/gallery/guntupalli/image3.jpeg" /><figcaption>Social & content · Guntupalli Marbles</figcaption></figure>
+        <figure class="mosaic-tile"><img src="/gallery/textile-summit/PHOTO-2026-01-02-17-00-15.jpg" alt="" loading="lazy" decoding="async" data-cycle="/gallery/textile-summit/PHOTO-2026-01-16-13-46-16.jpg|/gallery/textile-summit/PHOTO-2026-01-17-23-16-55.jpg" /><figcaption>Live events · Industry summit</figcaption></figure>
+      </div>
+      <div class="hero-art-caption"><strong>Gateway to digital excellence</strong><span>Brand · Media · Culture</span></div>
+    </div>
+        <div class="hero-foot"><span>Eight service lines · One team</span><span class="scroll-stamp" aria-hidden="true"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="stamp-circle" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" /></defs><text><textPath href="#stamp-circle" textLength="228">DUN DIGITAL • GATEWAY TO EXCELLENCE • </textPath></text></svg><span aria-hidden="true">✳</span></span><span>Chennai · India</span></div>
+  </section>
+
+  <section class="signal-band" aria-label="Dun Digital capabilities">
+    <div class="signal-track" aria-hidden="true">
+      <div class="signal-copy"><span>BRANDING</span><i>✳</i><span>SOCIAL</span><i>✳</i><span>ADVERTISING</span><i>✳</i><span>WEBSITES</span><i>✳</i><span>PR + INFLUENCER</span><i>✳</i><span>SHOOTS + EVENTS</span><i>✳</i></div>
+      <div class="signal-copy"><span>BRANDING</span><i>✳</i><span>SOCIAL</span><i>✳</i><span>ADVERTISING</span><i>✳</i><span>WEBSITES</span><i>✳</i><span>PR + INFLUENCER</span><i>✳</i><span>SHOOTS + EVENTS</span><i>✳</i></div>
+    </div>
+  </section>
+
+  <section class="intro section-wrap motion-section" id="about">
+    <div class="intro-grid motion-reveal">
+      <h2 class="h2-display">End-to-end, <em>by design.</em></h2>
+      <div class="intro-copy"><p>Dun Digital was founded in 2024 so brands, institutions and industry bodies never have to stitch together separate vendors for design, media, PR and events again.</p><p>One partner. One team. One point of contact, with the discipline to make every channel pull in the same direction.</p><a class="text-link" href="/about/">Meet the team</a></div>
+    </div>
+    <div class="proof-row motion-reveal motion-stagger"><div><strong data-countup="30" data-suffix="+">30+</strong><span>Clients & campaigns</span></div><div><strong data-countup="12" data-suffix="+">12+</strong><span>Industries served</span></div><div><strong data-countup="10">10</strong><span>CII & industry summits</span></div><div><strong data-countup="8">8</strong><span>Service lines</span></div></div>
+    <div class="industry-cloud intro-cloud">{industries.map((industry) => <span>{industry}</span>)}</div>
+  </section>
+
+  <section class="services section-wrap motion-section" id="services">
+    <div class="section-heading motion-reveal"><span class="sticker sticker-bubble">What we do</span><h2>Everything under one roof.</h2><p>Brand, social, advertising, web, PR, creators, shoots and live events, moving as one.</p></div>
+    <CapabilityList services={services} />
+    <div class="method-strip motion-reveal">
+      <h3>How every engagement runs.</h3>
+      <div class="method-row motion-stagger">
+        {method.map((item) => <div class="spot"><span>{item.step}</span><strong>{item.name}</strong><p>{item.note}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="work section-wrap motion-section" id="work">
+    <div class="work-heading motion-reveal"><span class="sticker sticker-lime">Proof, not promises</span><h2>Selected work.</h2><p>From a 13-day delegate-generation sprint to a statewide public-awareness campaign, engagements are scoped around clear deliverables and real benchmarks.</p></div>
+    <CaseStudyGrid cases={cases} />
+  </section>
+
+  <GallerySection frames={galleryFrames} />
+
+  <section class="contact section-wrap" id="contact"><div class="contact-orbit"><div class="orbit-core">DUN<br /><small>DIGITAL</small></div></div><div class="contact-copy"><span class="sticker sticker-grape">✳ Say hello</span><h2 class="h2-display">Gateway to<br /><em>digital excellence.</em></h2><p>Tell us what you’re building, launching or changing. We’ll bring the right mix of people and channels to the table.</p><button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button></div></section>
+</SiteLayout>
+
+<script>
+  // CardSwap: hero mosaic tiles cycle through same-client campaign photos.
+  // Paused off-screen, in background tabs, and under reduced motion.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hero = document.querySelector('.hero');
+  const cyclers = Array.from(document.querySelectorAll<HTMLImageElement>('.mosaic-tile img[data-cycle]')).map(
+    (img) => ({ img, urls: (img.dataset.cycle ?? '').split('|').filter(Boolean), index: -1 }),
+  );
+  if (!reduceMotion && hero && cyclers.length > 0 && 'IntersectionObserver' in window) {
+    let heroVisible = false;
+    new IntersectionObserver((entries) => {
+      heroVisible = entries[0].isIntersecting;
+    }).observe(hero);
+    const swapTile = (slot: { img: HTMLImageElement; urls: string[]; index: number }, delay: number) => {
+      window.setTimeout(() => {
+        if (!heroVisible || document.hidden) return;
+        slot.index = (slot.index + 1) % slot.urls.length;
+        const next = new Image();
+        next.decoding = 'async';
+        next.onload = () => {
+          slot.img.style.opacity = '0';
+          window.setTimeout(() => {
+            slot.img.src = slot.urls[slot.index];
+            slot.img.style.opacity = '1';
+          }, 420);
+        };
+        next.src = slot.urls[slot.index];
+      }, delay);
+    };
+    window.setInterval(() => {
+      cyclers.forEach((slot, i) => swapTile(slot, i * 450));
+    }, 4500);
+  }
+</script>

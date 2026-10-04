@@ -1,0 +1,76 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import CaseStudyGrid from '../../components/CaseStudyGrid.astro';
+import PhotoStrip from '../../components/PhotoStrip.astro';
+import { cases } from '../../data/content';
+
+const caseTypes = ['All', ...Array.from(new Set(cases.map((item) => item.type)))];
+---
+
+<SiteLayout title="Case studies" description="Selected Dun Digital case studies across manufacturing, government initiatives and real estate." activePath="/case-studies">
+  <div data-inner-page>
+    <section class="page-hero section-wrap">
+      <span class="page-index" aria-hidden="true">03</span>
+      <div class="breadcrumbs motion-reveal"><ol><li><a href="/">Home</a></li><li>/</li><li aria-current="page">Case studies</li></ol></div>
+      <div class="motion-reveal" style="--motion-delay:80ms"><span class="sticker">Selected work</span><h1>Built for the<br /><em>real world.</em></h1><p class="page-lede">Engagements scoped around clear deliverables, useful signals and work that has somewhere to go after launch.</p></div>
+    </section>
+
+    <div class="collection-controls section-wrap motion-reveal" data-case-controls role="group" aria-label="Filter and sort case studies">
+      <div><span class="collection-controls-label">Filter work</span><div class="collection-control-list">{caseTypes.map((type) => <button type="button" data-case-filter={type} aria-pressed={type === 'All'} class:list={[type === 'All' && 'is-active']}>{type}</button>)}</div><p class="sr-only" role="status" data-case-status></p></div>
+      <label class="collection-sort">Sort <select data-case-sort aria-label="Sort case studies"><option value="recent">Featured order</option><option value="az">Name A–Z</option><option value="za">Name Z–A</option><option value="type">Industry</option></select></label>
+    </div>
+
+    <section class="work section-wrap motion-section"><div class="work-heading motion-reveal"><h2>Proof over promises.</h2><p>From a 13-day delegate-generation sprint to a statewide public-awareness campaign, each story starts with context and ends with a clearer next move.</p></div><CaseStudyGrid cases={cases} /></section>
+
+    <PhotoStrip title="From recent engagements" frames={[
+      { image: '/gallery/iplas/PHOTO-2026-04-17-11-01-26.jpg', caption: 'Campaign creatives built for the moment.' },
+      { image: '/gallery/guntupalli/image4.jpeg', caption: 'Product-first social content.' },
+      { image: '/gallery/textile-summit/PHOTO-2026-01-17-23-16-55.jpg', caption: 'Live coverage at an industry event.' },
+    ]} />
+
+    <section class="cta-teaser section-wrap motion-reveal"><h2>Give the work a place to go.</h2><p>Tell us what you are building, launching or changing. We will help shape the story and the system around it.</p><button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button></section>
+  </div>
+</SiteLayout>
+
+<script>
+  const caseControls = document.querySelector<HTMLElement>('[data-case-controls]');
+  const caseGrid = document.querySelector<HTMLElement>('[data-case-grid]');
+  const caseCards = Array.from(document.querySelectorAll<HTMLElement>('[data-case-card]'));
+  const caseStatus = caseControls?.querySelector<HTMLElement>('[data-case-status]');
+  let activeType = 'All';
+  let activeSort = 'recent';
+
+  const announceCases = () => {
+    const visible = caseCards.filter((card) => activeType === 'All' || card.dataset.caseType === activeType).length;
+    if (caseStatus) caseStatus.textContent = `Showing ${visible} of ${caseCards.length} case studies, sorted ${activeSort === 'recent' ? 'by featured order' : activeSort === 'az' ? 'A to Z' : activeSort === 'za' ? 'Z to A' : 'by industry'}.`;
+  };
+
+  const renderCases = () => {
+    const visible = caseCards.filter((card) => activeType === 'All' || card.dataset.caseType === activeType);
+    const sorted = [...visible].sort((a, b) => {
+      if (activeSort === 'az') return (a.dataset.caseName ?? '').localeCompare(b.dataset.caseName ?? '');
+      if (activeSort === 'za') return (b.dataset.caseName ?? '').localeCompare(a.dataset.caseName ?? '');
+      if (activeSort === 'type') return (a.dataset.caseType ?? '').localeCompare(b.dataset.caseType ?? '');
+      return caseCards.indexOf(a) - caseCards.indexOf(b);
+    });
+    caseCards.forEach((card) => { card.hidden = true; });
+    sorted.forEach((card) => { card.hidden = false; caseGrid?.append(card); card.setAttribute('data-visible', ''); });
+  };
+
+  caseControls?.querySelectorAll<HTMLButtonElement>('[data-case-filter]').forEach((button) => {
+    button.addEventListener('click', () => {
+      activeType = button.dataset.caseFilter ?? 'All';
+      caseControls.querySelectorAll<HTMLButtonElement>('[data-case-filter]').forEach((control) => {
+        control.classList.toggle('is-active', control === button);
+        control.setAttribute('aria-pressed', String(control === button));
+      });
+      renderCases();
+      announceCases();
+    });
+  });
+  caseControls?.querySelector<HTMLSelectElement>('[data-case-sort]')?.addEventListener('change', (event) => {
+    activeSort = (event.currentTarget as HTMLSelectElement).value;
+    renderCases();
+    announceCases();
+  });
+</script>

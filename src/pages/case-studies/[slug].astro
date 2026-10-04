@@ -1,0 +1,50 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { cases } from '../../data/content';
+
+export function getStaticPaths() {
+  return cases.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const caseIndex = cases.findIndex((candidate) => candidate.slug === item.slug);
+const stageTints = ['#1a1025', '#6c35ff', '#a03d12', '#3a2a5e'];
+---
+
+<SiteLayout title={item.name} description={item.text} activePath="/case-studies">
+  <div data-inner-page>
+    <section class="page-hero section-wrap">
+      <span class="page-index" aria-hidden="true">{item.type.slice(0, 2).toUpperCase()}</span>
+      <div class="breadcrumbs motion-reveal"><ol><li><a href="/">Home</a></li><li>/</li><li><a href="/case-studies/">Case studies</a></li><li>/</li><li aria-current="page">{item.name}</li></ol></div>
+      <div class="motion-reveal" style="--motion-delay:80ms"><h1>{item.name}</h1><p class="page-lede">{item.text}</p></div>
+    </section>
+
+    <section class="case-detail section-wrap motion-section"><div class="case-detail-image motion-reveal" style={`background:${stageTints[Math.max(0, caseIndex) % stageTints.length]}`}>{item.image ? <img src={item.image} alt={`${item.name} campaign creative`} loading="eager" decoding="async" data-case-detail-img /> : <em class="case-stage-name" aria-hidden="true">{item.name}</em>}<span class="case-detail-label">{item.type} · {item.stageLabel}</span><b>CASE / 0{caseIndex + 1}</b></div><div class="case-detail-copy motion-reveal"><h2>Start with the context.</h2><p>{item.challenge}</p><small>{item.tags}</small></div></section>
+
+    {item.benchmarks && (
+      <section class="benchmarks section-wrap motion-section" aria-label="Benchmarked targets">
+        <h3>Benchmarked targets</h3>
+        <div class="benchmark-row motion-reveal motion-stagger">
+          {item.benchmarks.map((benchmark) => <div class="spot"><strong>{benchmark.value}</strong><span>{benchmark.label}</span></div>)}
+        </div>
+        {item.benchmarkNote && <p class="benchmark-note motion-reveal">{item.benchmarkNote}</p>}
+      </section>
+    )}
+
+
+    <section class="deliverables section-wrap motion-section"><div class="deliverables-grid"><div class="deliverables-intro motion-reveal"><h2>One connected move at a time.</h2><p>Strategy, making and amplification stay close enough to keep the work coherent.</p></div><div class="deliverable-list motion-reveal">{item.approach.map((step, index) => <div class="deliverable-row"><span>0{index + 1}</span><strong>{step}</strong></div>)}</div></div></section>
+
+    <section class="cta-teaser section-wrap motion-reveal"><h2>Make the signal travel.</h2><p>{item.outcome}</p><button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button></section>
+  </div>
+</SiteLayout>
+
+<script>
+  document.querySelectorAll<HTMLImageElement>('[data-case-detail-img]').forEach((img) => {
+    const reveal = () => img.classList.add('is-loaded');
+    if (img.complete && img.naturalWidth > 0) reveal();
+    else {
+      img.addEventListener('load', reveal, { once: true });
+      img.addEventListener('error', () => img.remove(), { once: true });
+    }
+  });
+</script>

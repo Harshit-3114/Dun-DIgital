@@ -1,0 +1,115 @@
+---
+interface CaseStudy {
+  slug: string;
+  type: string;
+  name: string;
+  text: string;
+  tags: string;
+  image?: string;
+  stageLabel: string;
+  challenge?: string;
+  outcome?: string;
+}
+
+interface Props {
+  cases: CaseStudy[];
+}
+
+const { cases } = Astro.props;
+
+// Tinted grounds for stories without photography — all hold paper text.
+const stageTints = ['#1a1025', '#6c35ff', '#a03d12', '#3a2a5e'];
+---
+
+<div data-case-grid class="case-grid grid items-start gap-x-6 gap-y-16 md:grid-cols-[1.1fr_0.9fr] md:gap-y-[70px]">
+  {cases.map((item, index) => (
+    <article class="motion-reveal group text-forest-ink" data-case-card data-case-type={item.type} data-case-name={item.name}>
+      <a href={`/case-studies/${item.slug}/`} class="block outline-none" aria-label={`Read the ${item.name} case study`}>
+        <div class="case-stage relative mb-[18px] grid min-h-[290px] place-items-center overflow-hidden bg-carbon-black text-stone-taupe outline-none transition-[translate] duration-250 ease-editorial motion-reduce:transition-none md:min-h-[350px] group-hover:-translate-y-1 group-focus-visible:ring-2 group-focus-visible:ring-forest-ink" style={!item.image ? `background:${stageTints[index % stageTints.length]}` : undefined}>
+          {item.image ? (
+            <img
+              src={item.image}
+              alt={`${item.name} campaign creative`}
+              loading="lazy"
+              decoding="async"
+              data-case-img
+              class="absolute inset-0 h-full w-full object-cover opacity-0 blur-[6px] transition-[opacity,filter,transform] duration-500 ease-editorial motion-reduce:transition-none group-hover:scale-[1.03]"
+            />
+          ) : (
+            <span class="case-stage-name relative z-[1] px-8 text-center font-light leading-[1.05] tracking-[-0.06em] text-[clamp(30px,3.4vw,52px)] text-bone-cream/90 transition-[color,translate] duration-250 ease-editorial motion-reduce:transition-none group-hover:-translate-y-0.5 group-hover:text-bone-cream" aria-hidden="true">{item.name}</span>
+          )}
+          <span class="absolute left-6 top-6 z-[2] font-mono text-[10px] uppercase tracking-[0.1em] text-bone-cream/70">{item.stageLabel}</span>
+          <b class="absolute bottom-4 right-6 z-[2] text-[54px] font-light tracking-[-0.1em] text-moss transition-[color,translate] duration-250 ease-editorial motion-reduce:transition-none group-hover:-translate-y-1 group-hover:text-stone-taupe">0{index + 1}</b>
+          <div class="absolute inset-4 border border-stone-taupe/50 transition-[inset,border-color] duration-250 ease-editorial motion-reduce:transition-none group-hover:inset-5 group-hover:border-stone-taupe" aria-hidden="true"></div>
+        </div>
+        <div class="mb-2 flex justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.08em] text-graphite">
+          <span>{item.type}</span><span class="text-clay">Case study</span>
+        </div>
+        <h3 class="mb-3 text-[26px] font-normal tracking-[-0.06em] transition-[color] duration-200 ease-editorial motion-reduce:transition-none group-hover:text-stone-taupe">{item.name}</h3>
+        <p class="mb-[18px] max-w-[480px] text-[14px] leading-[1.5] text-forest-ink">{item.text}</p>
+        <small class="font-mono text-[10px] uppercase tracking-[0.06em] text-clay">{item.tags}</small>
+      </a>
+        {item.challenge && (
+          <>
+          <div class="case-more" data-case-more>
+            <div>
+              <p class="case-challenge">{item.challenge}</p>
+              {item.outcome && <p class="case-outcome">{item.outcome}</p>}
+              <a class="case-full" href={`/case-studies/${item.slug}/`}>Full case study →</a>
+            </div>
+          </div>
+          <button type="button" class="case-toggle" data-case-toggle aria-expanded="false">Read the story <span aria-hidden="true">+</span></button>
+          </>
+        )}
+    </article>
+  ))}
+</div>
+
+<style>
+  [data-case-card] .case-stage { border:2px solid var(--ink); border-radius:22px; box-shadow:5px 5px 0 var(--ink); }
+  [data-case-card]:nth-child(4n+2) .case-stage { box-shadow:5px 5px 0 var(--tang); }
+  [data-case-card]:nth-child(4n+3) .case-stage { box-shadow:5px 5px 0 var(--grape); }
+  [data-case-card]:nth-child(4n+4) .case-stage { box-shadow:5px 5px 0 var(--sun); }
+  [data-case-card]:nth-child(odd) .case-stage { rotate:-.4deg; }
+  [data-case-card]:nth-child(even) .case-stage { rotate:.4deg; }
+  .case-more { display:grid; grid-template-rows:0fr; transition:grid-template-rows 350ms var(--ease-out); }
+  .case-more > div { overflow:hidden; min-height:0; }
+  [data-case-card][data-open] .case-more { grid-template-rows:1fr; }
+  .case-challenge { margin:14px 0 10px; max-width:52ch; font-size:14px; line-height:1.55; color:var(--plum); }
+  .case-outcome { margin:0 0 12px; max-width:52ch; font-size:14px; font-weight:700; color:var(--ink); }
+  .case-full { display:inline-block; margin-bottom:6px; font-size:12px; font-weight:800; color:var(--ink); border-bottom:3px solid var(--lime); padding-bottom:2px; }
+  .case-full:hover { background:var(--lime); }
+  .case-toggle { display:inline-flex; align-items:center; gap:8px; margin-top:14px; padding:10px 18px; min-height:44px; border-radius:999px; background:var(--paper); border:1.5px solid var(--ink); color:var(--ink); font-family:'DM Mono',monospace; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; cursor:pointer; box-shadow:2px 2px 0 var(--ink); transition:background 180ms ease, translate 180ms var(--ease-out); }
+  .case-toggle:hover { background:var(--sun); translate:0 -1px; }
+  .case-toggle span { display:grid; place-items:center; width:22px; height:22px; border-radius:999px; background:var(--lime); border:1.5px solid var(--ink); font-size:14px; transition:transform 250ms var(--ease-out); }
+  [data-case-card][data-open] .case-toggle span { transform:rotate(45deg); background:var(--tang); color:#fff; }
+  @media (hover:none) {
+    .case-toggle:hover { background:var(--paper); translate:0 0; }
+  }
+  @media (prefers-reduced-motion:reduce) {
+    [data-case-card] .case-stage { rotate:0; }
+    .case-more { transition:none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLImageElement>('[data-case-img]').forEach((img) => {
+    const reveal = () => {
+      img.classList.remove('opacity-0', 'blur-[6px]');
+    };
+    if (img.complete && img.naturalWidth > 0) reveal();
+    img.addEventListener('load', reveal, { once: true });
+    img.addEventListener('error', () => img.remove(), { once: true });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-case-toggle]').forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const card = toggle.closest<HTMLElement>('[data-case-card]');
+      if (!card) return;
+      const open = card.hasAttribute('data-open');
+      if (open) card.removeAttribute('data-open');
+      else card.setAttribute('data-open', '');
+      toggle.setAttribute('aria-expanded', String(!open));
+    });
+  });
+</script>

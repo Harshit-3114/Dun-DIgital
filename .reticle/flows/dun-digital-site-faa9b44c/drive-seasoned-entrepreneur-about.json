@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "name": "drive-seasoned-entrepreneur-about",
+  "projectId": "dun-digital-site-faa9b44c",
+  "createdAt": 1791113400610,
+  "steps": [
+    {
+      "tool": "reticle_act",
+      "anchor": {
+        "kind": "role",
+        "role": "unresolved"
+      },
+      "args": {},
+      "action": "click",
+      "degraded": true,
+      "expect": {
+        "kind": "text",
+        "contains": "seasoned entrepreneur",
+        "visible": true
+      },
+      "page": "/about/"
+    }
+  ],
+  "startPath": "/about/",
+  "requires": [
+    {
+      "kind": "route",
+      "pathname": "/about/"
+    }
+  ],
+  "ensures": [
+    {
+      "kind": "route",
+      "pathname": "/about/"
+    }
+  ],
+  "author": {
+    "agent": "opencode"
+  }
+}

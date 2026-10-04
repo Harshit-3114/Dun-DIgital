@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --color-carbon-black: #1a1025;
+  --color-bone-cream: #fff3e6;
+  --color-stone-taupe: #9a7ee6;
+  --color-forest-ink: #3a2a5e;
+  --color-graphite: #6e6486;
+  --color-mist-gray: #ead9c2;
+  --color-clay: #ff4d1c;
+  --color-moss: #7ed321;
+  --color-gold: #d98a00;
+  --color-tang: #ff5a1f;
+  --color-grape: #6c35ff;
+  --color-limepop: #d4f542;
+  --color-bubble: #ff7ad9;
+  --color-sun: #ffc531;
+  --color-candy-ink: #1a1025;
+  --font-display: "Bricolage Grotesque", "Manrope", Arial, sans-serif;
+  --font-sans: "Manrope", Arial, sans-serif;
+  --ease-editorial: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Candy-editorial motion: springy, spatial, transform-led. */
+.motion-reveal {
+  opacity: 0;
+  filter: blur(6px);
+  translate: 0 26px;
+  transition: opacity 700ms var(--ease-spring), filter 700ms ease, translate 700ms var(--ease-spring);
+  transition-delay: var(--motion-delay, 0ms);
+}
+
+.motion-reveal[data-visible] {
+  opacity: 1;
+  filter: blur(0);
+  translate: 0 0;
+}
+
+.motion-row:nth-child(2) { --motion-delay: 45ms; }
+.motion-row:nth-child(3) { --motion-delay: 90ms; }
+.motion-row:nth-child(4) { --motion-delay: 135ms; }
+.motion-row:nth-child(5) { --motion-delay: 180ms; }
+.motion-row:nth-child(6) { --motion-delay: 225ms; }
+.motion-row:nth-child(7) { --motion-delay: 270ms; }
+.motion-row:nth-child(8) { --motion-delay: 315ms; }
+
+.motion-stagger > div,
+.motion-stagger > li {
+  opacity: 0;
+  translate: 0 14px;
+  transition: opacity 550ms var(--ease-spring), translate 550ms var(--ease-spring);
+}
+
+.motion-stagger[data-visible] > div,
+.motion-stagger[data-visible] > li {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.motion-stagger[data-visible] > div:nth-child(2), .motion-stagger[data-visible] > li:nth-child(2) { transition-delay: 55ms; }
+.motion-stagger[data-visible] > div:nth-child(3), .motion-stagger[data-visible] > li:nth-child(3) { transition-delay: 110ms; }
+.motion-stagger[data-visible] > div:nth-child(4), .motion-stagger[data-visible] > li:nth-child(4) { transition-delay: 165ms; }
+.motion-stagger[data-visible] > div:nth-child(5), .motion-stagger[data-visible] > li:nth-child(5) { transition-delay: 220ms; }
+
+.motion-reveal h2 em,
+.motion-reveal h1 span,
+.motion-reveal h1 em {
+  position: relative;
+  display: inline-block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .motion-reveal a,
+  .motion-reveal button {
+    transition: translate 200ms var(--ease-spring), color 200ms ease;
+  }
+
+  .motion-reveal a:hover,
+  .motion-reveal button:hover {
+    translate: 0 -2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-reveal,
+  .motion-stagger > div,
+  .motion-stagger > li {
+    opacity: 1;
+    filter: none;
+    translate: 0 0;
+    transition: none;
+  }
+}
