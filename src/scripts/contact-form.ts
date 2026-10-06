@@ -224,7 +224,7 @@ export function initContactForm(form: HTMLFormElement): ContactFormApi {
       showSuccess();
     } catch (err) {
       console.error('[contact] submit failed', err);
-      setFormError('Something went wrong sending your inquiry. Please try again or email hello@dun.digital.');
+      setFormError('Something went wrong sending your inquiry. Please try again or email ops@dundigital.in.');
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.textContent = submitBtn.dataset.label ?? 'Send inquiry';

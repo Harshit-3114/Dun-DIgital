@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  --color-carbon-black: #1a1025;
-  --color-bone-cream: #fff3e6;
-  --color-stone-taupe: #9a7ee6;
-  --color-forest-ink: #3a2a5e;
-  --color-graphite: #6e6486;
-  --color-mist-gray: #ead9c2;
-  --color-clay: #ff4d1c;
-  --color-moss: #7ed321;
-  --color-gold: #d98a00;
-  --color-tang: #ff5a1f;
-  --color-grape: #6c35ff;
-  --color-limepop: #d4f542;
-  --color-bubble: #ff7ad9;
-  --color-sun: #ffc531;
-  --color-candy-ink: #1a1025;
+  --color-ink: #111111;
+  --color-paper: #f7f6f3;
+  --color-plum: #2f3437;
+  --color-muted: #787774;
+  --color-line: #eaeaea;
+  --color-card: #ffffff;
+  --color-accent-red: #fdebec;
+  --color-accent-red-text: #9f2f2d;
+  --color-accent-blue: #e1f3fe;
+  --color-accent-blue-text: #1f6c9f;
+  --color-accent-green: #edf3ec;
+  --color-accent-green-text: #346538;
+  --color-accent-yellow: #fbf3db;
+  --color-accent-yellow-text: #956400;
+  --color-muted-text: #787774;
   --font-display: "Bricolage Grotesque", "Manrope", Arial, sans-serif;
   --font-sans: "Manrope", Arial, sans-serif;
-  --ease-editorial: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -28,12 +28,12 @@
   }
 }
 
-/* Candy-editorial motion: springy, spatial, transform-led. */
+/* Subtle motion: gentle, quiet, transform-led. */
 .motion-reveal {
   opacity: 0;
   filter: blur(6px);
   translate: 0 26px;
-  transition: opacity 700ms var(--ease-spring), filter 700ms ease, translate 700ms var(--ease-spring);
+  transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), filter 600ms ease, translate 600ms cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--motion-delay, 0ms);
 }
 
@@ -55,7 +55,7 @@
 .motion-stagger > li {
   opacity: 0;
   translate: 0 14px;
-  transition: opacity 550ms var(--ease-spring), translate 550ms var(--ease-spring);
+  transition: opacity 550ms cubic-bezier(0.16, 1, 0.3, 1), translate 550ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .motion-stagger[data-visible] > div,
@@ -79,7 +79,7 @@
 @media (hover: hover) and (pointer: fine) {
   .motion-reveal a,
   .motion-reveal button {
-    transition: translate 200ms var(--ease-spring), color 200ms ease;
+    transition: translate 200ms cubic-bezier(0.16, 1, 0.3, 1), color 200ms ease;
   }
 
   .motion-reveal a:hover,

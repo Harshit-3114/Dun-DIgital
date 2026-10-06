@@ -1,0 +1,42 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PhotoStrip from '../components/PhotoStrip.astro';
+import { services } from '../data/content';
+
+const events = services.find((service) => service.slug === 'live-event-coverage')!;
+---
+
+<SiteLayout title="Events" description="Live event coverage from the first teaser to the post-event report. Pre-event promotion, delegate lead gen, LED and venue branding, live updates and speaker bytes — trusted across CII summits and expos." activePath="/events/">
+  <div data-inner-page>
+    <section class="page-hero section-wrap">
+      <span class="page-index" aria-hidden="true">05</span>
+      <div class="breadcrumbs motion-reveal"><ol><li><a href="/">Home</a></li><li>/</li><li aria-current="page">Events</li></ol></div>
+      <div class="motion-reveal" style="--motion-delay:80ms"><span class="sticker sticker-grape">✳ Live event coverage</span><h1>From the first teaser to the <em>post-event report.</em></h1><p class="page-lede">Pre-event promotion, delegate lead gen, LED and venue branding, live updates and speaker bytes — run as one sprint. Trusted across CII summits and expos, from EduTech and IndEx to the Bengaluru Space Expo.</p><div class="hero-ctas"><button type="button" class="button button-outline" data-inquiry-open>Plan your event</button></div></div>
+    </section>
+
+    <section class="showreel section-wrap motion-section" aria-label="Showreel 2026">
+      <div class="showreel-frame motion-reveal">
+        <div class="showreel-head"><span>Showreel 2026 — 01:30</span><span>Brand shoots · Events · Reels</span></div>
+        <video controls preload="none" poster="/gallery/textile-summit/PHOTO-2026-01-20-08-10-39.jpg" aria-label="Dun Digital showreel 2026">
+          <source src="/showreel-2026.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </section>
+
+    <section class="deliverables section-wrap motion-section"><div class="deliverables-grid"><div class="deliverables-intro motion-reveal"><h2>One sprint, end to end.</h2><p>Every engagement is scoped with fixed deliverables and benchmark targets before we start.</p></div><div class="deliverable-list motion-reveal">{events.deliverables.map((deliverable, index) => <div class="deliverable-row"><span>0{index + 1}</span><strong>{deliverable}</strong></div>)}</div></div><div class="deliverable-outcome motion-reveal"><span>The outcome</span><p>{events.outcome}</p></div></section>
+
+    <section class="benchmarks section-wrap motion-section" aria-label="Event benchmark">
+      <div class="benchmark-row motion-reveal motion-stagger">
+        <div class="spot"><strong data-countup="200" data-suffix="+">200+</strong><span>visitor leads at BSX 2026</span></div>
+      </div>
+    </section>
+
+    <PhotoStrip title="On the ground" frames={[
+      { image: '/gallery/textile-summit/PHOTO-2026-01-20-08-10-39.jpg', caption: 'Venue branding at an industry summit.' },
+      { image: '/gallery/textile-summit/PHOTO-2026-01-02-17-00-15.jpg', caption: 'Live updates carrying a single voice.' },
+      { image: '/gallery/textile-summit/PHOTO-2026-01-24-16-10-21.jpg', caption: 'Speaker moments, captured live.' },
+    ]} />
+
+    <section class="cta-teaser section-wrap motion-reveal"><h2>Planning an event?</h2><p>Tell us the date, the venue and the outcome you need. We will bring the sprint — promotion, branding, coverage and report.</p><button type="button" class="button button-outline" data-inquiry-open>Plan your event</button></section>
+  </div>
+</SiteLayout>

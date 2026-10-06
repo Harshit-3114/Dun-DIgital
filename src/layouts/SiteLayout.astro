@@ -22,6 +22,7 @@ const fullTitle = `${title} · Dun Digital`;
 const navLinks = [
   { href: '/about/', label: 'About' },
   { href: '/services/', label: 'Services' },
+  { href: '/events/', label: 'Events' },
   { href: '/case-studies/', label: 'Case studies' },
   { href: '/#gallery', label: 'Gallery' },
   { href: '/contact/', label: 'Contact' }
@@ -55,8 +56,8 @@ const pairingRoot = import.meta.env.DEV ? process.cwd() : '';
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="canonical" href={canonicalURL} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="512x512" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:type" content="website" />
@@ -80,8 +81,8 @@ const pairingRoot = import.meta.env.DEV ? process.cwd() : '';
           '@id': 'https://dun.digital/#org',
           name: 'Dun Digital',
           url: 'https://dun.digital/',
-          logo: 'https://dun.digital/favicon.svg',
-          email: 'hello@dun.digital',
+          logo: 'https://dun.digital/logo-stacked-light.png',
+          email: 'ops@dundigital.in',
           address: { '@type': 'PostalAddress', addressLocality: 'Chennai', addressCountry: 'IN' },
         },
         {
@@ -110,14 +111,14 @@ const pairingRoot = import.meta.env.DEV ? process.cwd() : '';
   <body>
     <div class="preloader" data-preloader aria-hidden="true">
       <div class="preloader-inner">
-        <span class="preloader-mark">D</span>
+        <img class="preloader-logo" src="/logo-mark.png" alt="Dun Digital" width="48" height="48" />
         <span class="preloader-count" data-preloader-count>0%</span>
       </div>
     </div>
     <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
     <a class="skip-link" href="#top">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="/" aria-label="Dun Digital home"><span class="brand-mark">D</span><span>DUN<br /><em>DIGITAL</em></span></a>
+      <a class="brand" href="/" aria-label="Dun Digital home"><img class="brand-logo" src="/logo-lockup.png" alt="Dun Digital" width="156" height="36" /></a>
       <nav class="desktop-nav" aria-label="Primary navigation">
         {navLinks.map((link) => <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>{link.label}</a>)}
       </nav>
@@ -134,16 +135,15 @@ const pairingRoot = import.meta.env.DEV ? process.cwd() : '';
         <svg class="wave-one" viewBox="0 0 2880 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,64 C240,104 480,24 720,64 C960,104 1200,24 1440,64 C1680,104 1920,24 2160,64 C2400,104 2640,24 2880,64 L2880,120 L0,120 Z" fill="currentColor" /></svg>
         <svg class="wave-two" viewBox="0 0 2880 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,56 C240,16 480,96 720,56 C960,16 1200,96 1440,56 C1680,16 1920,96 2160,56 C2400,16 2640,96 2880,56 L2880,120 L0,120 Z" fill="currentColor" /></svg>
       </div>
-      <div class="footer-giant section-wrap" aria-hidden="true">DUN DIGITAL</div>
       <div class="footer-inner section-wrap">
         <div class="footer-brand">
-          <a class="brand" href="/" aria-label="Dun Digital home"><span class="brand-mark">D</span><span>DUN<br /><em>DIGITAL</em></span></a>
+          <a class="brand" href="/" aria-label="Dun Digital home"><img class="brand-logo" src="/logo-stacked-light.png" alt="Dun Digital" width="180" height="180" /></a>
           <p>One accountable team for brands that need their digital presence to move as one.</p>
         </div>
-        <div class="footer-col"><span class="footer-col-label">Explore</span><a href="/about/">About</a><a href="/services/">Services</a><a href="/case-studies/">Case studies</a><a href="/#gallery">Gallery</a><a href="/contact/">Contact</a></div>
-        <div class="footer-col"><span class="footer-col-label">Start here</span><button type="button" data-inquiry-open>Start a conversation</button><a href="mailto:hello@dun.digital">hello@dun.digital</a></div>
+        <div class="footer-col"><span class="footer-col-label">Explore</span><a href="/about/">About</a><a href="/services/">Services</a><a href="/events/">Events</a><a href="/case-studies/">Case studies</a><a href="/#gallery">Gallery</a><a href="/contact/">Contact</a></div>
+        <div class="footer-col"><span class="footer-col-label">Start here</span><button type="button" data-inquiry-open>Start a conversation</button><a href="mailto:ops@dundigital.in">ops@dundigital.in</a><a href="tel:+919884131276">+91 98841 31276</a></div>
       </div>
-      <div class="newsletter section-wrap"><h3>Occasional notes from the studio.</h3><div><p class="newsletter-done">No spam, just good work when it is ready.</p><a class="footer-mail" href="mailto:hello@dun.digital?subject=Add%20me%20to%20the%20studio%20notes">Get the notes →</a></div></div>
+      <div class="newsletter section-wrap"><h3>Occasional notes from the studio.</h3><div><p class="newsletter-done">No spam, just good work when it is ready.</p><a class="footer-mail" href="mailto:ops@dundigital.in?subject=Add%20me%20to%20the%20studio%20notes">Get the notes →</a></div></div>
       <div class="footer-bottom section-wrap"><span>© {new Date().getFullYear()} Dun Digital. All rights reserved.</span><a class="footer-top" href="#top">Back to top ↑</a></div>
     </footer>
     <InquiryDrawer />
