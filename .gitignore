@@ -23,3 +23,6 @@ Thumbs.db
 # Large source archives — not deployed (served from public/gallery instead)
 Gallery/*.zip
 Gallery/*.mp4
+
+# Reticle verification artifacts stay local
+.reticle/flows/
