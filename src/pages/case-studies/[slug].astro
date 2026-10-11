@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import { Picture } from 'astro:assets';
 import { cases } from '../../data/content';
 
 export function getStaticPaths() {
@@ -19,7 +20,7 @@ const stageTints = ['#1a1025', '#6c35ff', '#a03d12', '#3a2a5e'];
       <div class="motion-reveal" style="--motion-delay:80ms"><h1>{item.name}</h1><p class="page-lede">{item.text}</p></div>
     </section>
 
-    <section class="case-detail section-wrap motion-section"><div class="case-detail-image motion-reveal" style={`background:${stageTints[Math.max(0, caseIndex) % stageTints.length]}`}>{item.image ? <img src={item.image} alt={`${item.name} campaign creative`} loading="eager" decoding="async" data-case-detail-img /> : <em class="case-stage-name" aria-hidden="true">{item.name}</em>}<span class="case-detail-label">{item.type} · {item.stageLabel}</span><b>CASE / 0{caseIndex + 1}</b></div><div class="case-detail-copy motion-reveal"><h2>Start with the context.</h2><p>{item.challenge}</p><small>{item.tags}</small></div></section>
+    <section class="case-detail section-wrap motion-section"><div class="case-detail-image motion-reveal" style={`background:${stageTints[Math.max(0, caseIndex) % stageTints.length]}`}>{item.image ? <Picture fallbackFormat="webp" src={item.image} alt={`${item.name} campaign creative`} loading="eager" decoding="async" widths={[640, 1024]} sizes="(max-width: 768px) 100vw, 55vw" formats={['avif', 'webp']} data-case-detail-img /> : <em class="case-stage-name" aria-hidden="true">{item.name}</em>}<span class="case-detail-label">{item.type} · {item.stageLabel}</span><b>CASE / 0{caseIndex + 1}</b></div><div class="case-detail-copy motion-reveal"><h2>Start with the context.</h2><p>{item.challenge}</p><small>{item.tags}</small></div></section>
 
     {item.benchmarks && (
       <section class="benchmarks section-wrap motion-section" aria-label="Benchmarked targets">

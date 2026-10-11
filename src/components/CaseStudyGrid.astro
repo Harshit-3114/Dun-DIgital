@@ -1,11 +1,14 @@
 ---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface CaseStudy {
   slug: string;
   type: string;
   name: string;
   text: string;
   tags: string;
-  image?: string;
+  image?: ImageMetadata;
   stageLabel: string;
   challenge?: string;
   outcome?: string;
@@ -27,11 +30,14 @@ const stageTints = ['#1a1025', '#6c35ff', '#a03d12', '#3a2a5e'];
       <a href={`/case-studies/${item.slug}/`} class="block outline-none" aria-label={`Read the ${item.name} case study`}>
         <div class="case-stage relative mb-[18px] grid min-h-[290px] place-items-center overflow-hidden bg-carbon-black text-stone-taupe outline-none transition-[translate] duration-250 ease-editorial motion-reduce:transition-none md:min-h-[350px] group-hover:-translate-y-1 group-focus-visible:ring-2 group-focus-visible:ring-forest-ink" style={!item.image ? `background:${stageTints[index % stageTints.length]}` : undefined}>
           {item.image ? (
-            <img
+            <Picture fallbackFormat="webp"
               src={item.image}
               alt={`${item.name} campaign creative`}
               loading="lazy"
               decoding="async"
+              widths={[480, 800]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              formats={['avif', 'webp']}
               data-case-img
               class="absolute inset-0 h-full w-full object-cover opacity-0 blur-[6px] transition-[opacity,filter,transform] duration-500 ease-editorial motion-reduce:transition-none group-hover:scale-[1.03]"
             />

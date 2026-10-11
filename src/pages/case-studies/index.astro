@@ -3,6 +3,9 @@ import SiteLayout from '../../layouts/SiteLayout.astro';
 import CaseStudyGrid from '../../components/CaseStudyGrid.astro';
 import PhotoStrip from '../../components/PhotoStrip.astro';
 import { cases } from '../../data/content';
+import casesImg1 from '../../assets/gallery/iplas/PHOTO-2026-04-17-11-01-26.jpg';
+import casesImg2 from '../../assets/gallery/guntupalli/image4.jpeg';
+import casesImg3 from '../../assets/gallery/textile-summit/PHOTO-2026-01-17-23-16-55.jpg';
 
 const caseTypes = ['All', ...Array.from(new Set(cases.map((item) => item.type)))];
 ---
@@ -23,9 +26,9 @@ const caseTypes = ['All', ...Array.from(new Set(cases.map((item) => item.type)))
     <section class="work section-wrap motion-section"><div class="work-heading motion-reveal"><h2>Proof over promises.</h2><p>From a 13-day delegate-generation sprint to a statewide public-awareness campaign, each story starts with context and ends with a clearer next move.</p></div><CaseStudyGrid cases={cases} /></section>
 
     <PhotoStrip title="From recent engagements" frames={[
-      { image: '/gallery/iplas/PHOTO-2026-04-17-11-01-26.jpg', caption: 'Campaign creatives built for the moment.' },
-      { image: '/gallery/guntupalli/image4.jpeg', caption: 'Product-first social content.' },
-      { image: '/gallery/textile-summit/PHOTO-2026-01-17-23-16-55.jpg', caption: 'Live coverage at an industry event.' },
+      { image: casesImg1, caption: 'Campaign creatives built for the moment.' },
+      { image: casesImg2, caption: 'Product-first social content.' },
+      { image: casesImg3, caption: 'Live coverage at an industry event.' },
     ]} />
 
     <section class="cta-teaser section-wrap motion-reveal"><h2>Give the work a place to go.</h2><p>Tell us what you are building, launching or changing. We will help shape the story and the system around it.</p><button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button></section>

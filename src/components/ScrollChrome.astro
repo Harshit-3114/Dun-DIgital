@@ -9,6 +9,7 @@ const items = [
   { href: '/', label: 'Home', match: (p: string) => normalize(p) === '/' },
   { href: '/services/', label: 'Services', match: (p: string) => normalize(p).startsWith('/services/') },
   { href: '/case-studies/', label: 'Work', match: (p: string) => normalize(p).startsWith('/case-studies/') },
+  { href: '/contact/', label: 'Contact', match: (p: string) => normalize(p).startsWith('/contact/') },
 ];
 ---
 
@@ -17,7 +18,6 @@ const items = [
     {items.map((item) => (
       <a href={item.href} aria-current={item.match(activePath) ? 'page' : undefined}>{item.label}</a>
     ))}
-    <button type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" class="thumb-dock-menu">Menu</button>
     <button type="button" data-inquiry-open class="thumb-dock-cta">Start</button>
   </div>
 </nav>
@@ -48,7 +48,7 @@ const items = [
     padding:6px;
     box-shadow:4px 4px 0 var(--ink);
   }
-  .thumb-dock a, .thumb-dock-menu, .thumb-dock-cta {
+  .thumb-dock a, .thumb-dock-cta {
     flex:1;
     display:grid;
     place-items:center;
@@ -64,9 +64,11 @@ const items = [
     text-transform:uppercase;
     letter-spacing:.06em;
     cursor:pointer;
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-touch-callout:none;
   }
   .thumb-dock a[aria-current="page"] { background:var(--ink); color:var(--lime); border-color:var(--ink); }
-  .thumb-dock-menu[aria-expanded="true"] { background:var(--ink); color:var(--lime); border-color:var(--ink); }
   .thumb-dock-cta { background:var(--tang); color:#fff; border-color:var(--ink); flex:1.2; }
   .thumb-dock-cta:active { transform:scale(.96); }
   .to-top {

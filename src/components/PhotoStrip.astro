@@ -1,6 +1,9 @@
 ---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface StripFrame {
-  image: string;
+  image: ImageMetadata;
   caption: string;
 }
 
@@ -17,7 +20,7 @@ const { title, frames } = Astro.props;
     {frames.map((frame, index) => (
       <figure>
         <div class="photo-frame" data-frame-stage>
-          <img src={frame.image} alt="" loading="lazy" decoding="async" data-frame-image />
+          <Picture fallbackFormat="webp" src={frame.image} alt="" loading="lazy" decoding="async" widths={[400, 800]} sizes="(max-width: 768px) 100vw, 33vw" formats={['avif', 'webp']} data-frame-image />
           <span class="frame-skeleton" data-frame-skeleton></span>
           <b>{String(index + 1).padStart(2, '0')}</b>
         </div>

@@ -2,6 +2,9 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import ContactForm from '../components/ContactForm.astro';
 import PhotoStrip from '../components/PhotoStrip.astro';
+import contactImg1 from '../assets/gallery/comfort-point/image3.jpeg';
+import contactImg2 from '../assets/gallery/ragam/image6.jpeg';
+import contactImg3 from '../assets/gallery/igs/image2.jpeg';
 
 const googleFormEmbedUrl = import.meta.env.PUBLIC_GOOGLE_FORM_EMBED_URL;
 ---
@@ -11,7 +14,7 @@ const googleFormEmbedUrl = import.meta.env.PUBLIC_GOOGLE_FORM_EMBED_URL;
     <section class="page-hero section-wrap">
       <span class="page-index">04</span>
       <div class="breadcrumbs motion-reveal"><ol><li><a href="/">Home</a></li><li>/</li><li aria-current="page">Contact</li></ol></div>
-      <div class="motion-reveal" style="--motion-delay:80ms"><span class="sticker sticker-grape">✳ Contact</span><h1>Bring us the<br /><em>next move.</em></h1><p class="page-lede">Tell us what you are building, launching or changing. We will come back with the right mix of people and channels for it.</p></div>
+      <div class="motion-reveal" style="--motion-delay:80ms"><span class="sticker sticker-grape"><svg class="tick" aria-hidden="true"><use href="#i-spark" /></svg>Contact</span><h1>Bring us the<br /><em>next move.</em></h1><p class="page-lede">Tell us what you are building, launching or changing. We will come back with the right mix of people and channels for it.</p></div>
     </section>
 
     <section class="contact section-wrap motion-reveal"><div class="contact-orbit"><div class="orbit-core">DUN<br /><small>DIGITAL</small></div></div><div class="contact-copy"><h2>Start with the context.</h2><p>Share a little context and the right Dun Digital team will come back to you. No obligation, no jargon.</p><button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button><p class="contact-alt">Prefer email? <a href="mailto:ops@dundigital.in">ops@dundigital.in</a></p></div></section>
@@ -32,9 +35,9 @@ const googleFormEmbedUrl = import.meta.env.PUBLIC_GOOGLE_FORM_EMBED_URL;
     </section>
 
     <PhotoStrip title="The work you would be buying" frames={[
-      { image: '/gallery/comfort-point/image3.jpeg', caption: 'Gifting and launch work for Comfort Point.' },
-      { image: '/gallery/ragam/image6.jpeg', caption: 'Manufacturing brand content that sells.' },
-      { image: '/gallery/igs/image2.jpeg', caption: 'Social-first campaign creatives.' },
+      { image: contactImg1, caption: 'Gifting and launch work for Comfort Point.' },
+      { image: contactImg2, caption: 'Manufacturing brand content that sells.' },
+      { image: contactImg3, caption: 'Social-first campaign creatives.' },
     ]} />
 
     <section class="faq section-wrap motion-section">

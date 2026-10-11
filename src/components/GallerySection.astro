@@ -1,10 +1,13 @@
 ---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface GalleryFrame {
   label: string;
   title: string;
   caption: string;
   client?: string;
-  image?: string;
+  image?: ImageMetadata;
 }
 
 interface Props {
@@ -26,19 +29,19 @@ const { frames } = Astro.props;
       <button type="button" data-gallery-next aria-label="Next frame">→</button>
     </div>
   </div>
-  <div class="gallery-strip" data-gallery-strip tabindex="0" aria-label="Gallery frames, scroll horizontally">
+  <div class="gallery-strip" data-gallery-strip tabindex="0" role="region" aria-roledescription="carousel" aria-label="Gallery frames, scroll horizontally">
     <div class="gallery-track">
-      {frames.map((frame, index) => (
-        <article class="gallery-frame motion-reveal" data-gallery-frame aria-label={`${frame.label} · ${frame.title}`}>
+      {[...frames, ...frames, ...frames].map((frame, index) => (
+        <article class="gallery-frame motion-reveal" data-gallery-frame aria-roledescription="slide" aria-label={`${frame.label} · ${frame.title}`} aria-hidden={index < frames.length || index >= frames.length * 2 ? 'true' : undefined}>
           <div class="frame-stage" data-frame-stage>
             <span class="frame-label">{frame.label}{frame.client ? <em> · {frame.client}</em> : null}</span>
             {frame.image ? (
-              <img src={frame.image} alt="" loading="lazy" decoding="async" data-frame-image />
+              <Picture fallbackFormat="webp" src={frame.image} alt={`${frame.title} — ${frame.client ? `${frame.client} ` : ''}${frame.label} work by Dun Digital`} loading="lazy" decoding="async" widths={[560, 1120]} sizes="(max-width: 768px) 78vw, min(38vw, 560px)" formats={['avif', 'webp']} data-frame-image />
             ) : (
               <span class="frame-placeholder">Campaign visual placeholder</span>
             )}
             <span class="frame-skeleton" data-frame-skeleton></span>
-            <b class="frame-number">{String(index + 1).padStart(2, '0')}</b>
+            <b class="frame-number">{String((index % frames.length) + 1).padStart(2, '0')}</b>
           </div>
           <div class="frame-caption">
             <strong>{frame.title}</strong>
@@ -51,9 +54,9 @@ const { frames } = Astro.props;
 </section>
 
 <style>
-  .gallery { padding:96px 0 150px; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); background:var(--sun); rotate:-.6deg; scale:1.01; }
+  .gallery { padding:96px 0 150px; border-top:2px solid var(--accent-green); border-bottom:2px solid var(--accent-green); background:var(--ink); color:var(--paper); }
   .gallery-head { display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:16px; margin-bottom:44px; }
-  .gallery-head h3 { margin:14px 0 0; font-size:clamp(24px, 2.6vw, 30px); font-weight:800; letter-spacing:-.025em; color:var(--ink); }
+  .gallery-head h3 { margin:14px 0 0; font-size:clamp(24px, 2.6vw, 30px); font-weight:800; letter-spacing:-.025em; color:var(--paper); }
   .gallery-indicator { display:flex; flex-direction:column; align-items:end; gap:10px; font-family:'DM Mono',monospace; font-size:11px; font-weight:700; color:var(--ink); white-space:nowrap; background:var(--paper); border:1.5px solid var(--ink); border-radius:14px; padding:10px 14px; box-shadow:3px 3px 0 var(--ink); }
   .gallery-nav { display:flex; gap:8px; }
   .gallery-nav button { display:grid; place-items:center; width:44px; height:44px; border-radius:999px; background:var(--paper); border:1.5px solid var(--ink); color:var(--ink); font-size:18px; cursor:pointer; box-shadow:3px 3px 0 var(--ink); transition:background 180ms ease, translate 180ms var(--ease-out); }
@@ -63,46 +66,44 @@ const { frames } = Astro.props;
   .indicator-count b { color:var(--tang); font-weight:700; }
   .indicator-line { position:relative; display:block; width:120px; height:4px; background:rgba(26,16,37,.15); border-radius:999px; }
   .indicator-progress { position:absolute; left:0; top:0; height:4px; width:16.666%; background:var(--grape); border-radius:999px; transition:translate 300ms var(--ease-out); }
-  .gallery-strip { overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; cursor:grab; -webkit-overflow-scrolling:touch; }
+  .gallery-strip { overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; scrollbar-width:none; cursor:grab; -webkit-overflow-scrolling:touch; }
   .gallery-strip::-webkit-scrollbar { display:none; }
   .gallery-strip:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
   .gallery-strip.is-dragging { cursor:grabbing; scroll-snap-type:none; scroll-behavior:auto; user-select:none; }
-  .gallery-track { display:flex; gap:24px; width:max-content; padding-inline:max(24px, calc((100vw - 1320px) / 2)); perspective:1400px; }
-  .gallery-frame { scroll-snap-align:center; width:min(78vw, 560px); flex-shrink:0; transform-style:preserve-3d; transition:opacity 400ms ease, scale 400ms var(--ease-out); }
-  .gallery-frame.is-dim { opacity:.45; scale:.985; }
+  .gallery-track { display:flex; gap:24px; width:max-content; padding-inline:0; }
+  /* Edge spacers: half a viewport minus half a frame, so the first and last
+     frames can settle on center instead of stranding at the rails. */
+  .gallery-track::before, .gallery-track::after { content:''; flex-shrink:0; width:max(24px, calc(50vw - min(39vw, 280px))); }
+  .gallery-frame { scroll-snap-align:center; width:min(78vw, 560px); flex-shrink:0; }
   .frame-stage { position:relative; display:grid; place-items:center; aspect-ratio:4/3; background:var(--ink); color:var(--paper); overflow:hidden; border:2px solid var(--ink); border-radius:20px; box-shadow:5px 5px 0 var(--ink); }
-  .gallery-frame:nth-child(odd) .frame-stage { rotate:-.7deg; }
-  .gallery-frame:nth-child(even) .frame-stage { rotate:.7deg; }
   .frame-label { position:absolute; top:16px; left:16px; z-index:2; font-family:'DM Mono',monospace; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--ink); background:var(--lime); padding:5px 12px; border-radius:999px; max-width:70%; }
   .frame-label em { font-style:normal; opacity:.65; }
   .frame-number { position:absolute; bottom:12px; right:18px; z-index:2; font-family:var(--font-display); font-size:54px; font-weight:800; letter-spacing:-.04em; color:var(--sun); transition:color 250ms ease; }
   .frame-placeholder { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.12em; color:var(--paper); }
-  .frame-stage img[data-frame-image] { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; filter:blur(6px); transition:opacity 500ms ease, filter 500ms ease; }
-  .frame-stage.is-loaded img[data-frame-image] { opacity:1; filter:blur(0); }
+  .frame-stage img[data-frame-image] { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; filter:blur(6px); transform:scale(1.06); transition:opacity 500ms ease, filter 500ms ease, transform 700ms var(--ease-out); }
+  .frame-stage.is-loaded img[data-frame-image] { opacity:1; filter:blur(0); transform:scale(1); }
   .frame-skeleton { position:absolute; inset:16px; border:1px solid rgba(255,243,230,.45); overflow:hidden; pointer-events:none; z-index:1; }
   .frame-skeleton::before { content:''; position:absolute; inset:0; translate:-100% 0; background:linear-gradient(100deg, transparent 20%, rgba(212,245,66,.25) 50%, transparent 80%); animation:skeleton-sweep 1.8s var(--ease-out) infinite; }
   @keyframes skeleton-sweep { to { translate:100% 0; } }
   .frame-stage.is-loaded .frame-skeleton { display:none; }
   .frame-caption { display:flex; flex-direction:column; gap:6px; margin-top:16px; }
-  .frame-caption strong { font-size:20px; font-weight:400; letter-spacing:-.04em; color:var(--ink); transition:color 200ms ease; }
-  .frame-caption span { color:var(--plum); font-size:13px; line-height:1.45; max-width:44ch; }
+  .frame-caption strong { font-size:20px; font-weight:400; letter-spacing:-.04em; color:var(--paper); transition:color 200ms ease; }
+  .frame-caption span { color:var(--paper-soft); font-size:13px; line-height:1.45; max-width:44ch; }
   @media (hover:hover) and (pointer:fine) {
     .frame-stage img[data-frame-image] { transition:opacity 500ms ease, filter 500ms ease, transform 600ms var(--ease-out); }
     .gallery-frame:hover .frame-stage img[data-frame-image] { transform:scale(1.04); will-change:transform; }
     .gallery-frame:hover .frame-number { color:rgba(255,243,230,.92); }
-    .gallery-frame:hover .frame-caption strong { color:var(--tang); }
+    .gallery-frame:hover .frame-caption strong { color:var(--lime); }
   }
-  @media (min-width:769px) { .gallery-frame { width:min(38vw, 560px); } }
+  @media (min-width:769px) { .gallery-frame { width:min(38vw, 560px); } .gallery-track::before, .gallery-track::after { width:max(24px, calc(50vw - min(19vw, 280px))); } }
+  @media (max-width:768px) { .gallery-track { gap:16px; } }
   @media (hover:none) {
     .gallery-frame:hover .frame-stage img[data-frame-image] { transform:none; }
     .gallery-frame:hover .frame-number { color:var(--sun); }
-    .gallery-frame:hover .frame-caption strong { color:var(--ink); }
+    .gallery-frame:hover .frame-caption strong { color:var(--paper); }
     .gallery-nav button:hover { background:var(--paper); color:var(--ink); translate:0 0; }
   }
   @media (prefers-reduced-motion:reduce) {
-    .gallery { rotate:0; scale:1; }
-    .gallery-frame .frame-stage { rotate:0; }
-    .gallery-frame.is-dim { opacity:1; scale:1; }
     .frame-skeleton::before { animation:none; }
     .frame-stage img[data-frame-image] { transition:none; }
     .indicator-progress { transition:none; }
@@ -114,45 +115,65 @@ const { frames } = Astro.props;
 </style>
 
 <script>
+  // Infinite loop: the track holds three copies of the set. The middle copy
+  // is home; when scrolling settles on a clone, we jump exactly one set over
+  // (instantly, same frame centered) so the loop never ends. Counter and
+  // progress always show the position inside a single set.
   const strip = document.querySelector<HTMLElement>('[data-gallery-strip]');
-  const frames = Array.from(document.querySelectorAll<HTMLElement>('[data-gallery-frame]'));
+  const track = strip?.querySelector<HTMLElement>('.gallery-track') ?? null;
+  const allFrames = Array.from(document.querySelectorAll<HTMLElement>('[data-gallery-frame]'));
+  const total = allFrames.length / 3;
   const current = document.querySelector<HTMLElement>('[data-gallery-current]');
   const progress = document.querySelector<HTMLElement>('[data-gallery-progress]');
 
-  const setActive = (index: number) => {
-    if (current) current.textContent = String(index + 1).padStart(2, '0');
-    if (progress && frames.length > 0) {
-      progress.style.width = `${100 / frames.length}%`;
-      progress.style.translate = `${index * 100}% 0`;
-    }
-    // Spotlight: the centered frame carries full presence, the rest recede.
-    frames.forEach((frame, i) => frame.classList.toggle('is-dim', i !== index));
+  const frameCenter = (frame: HTMLElement) => frame.offsetLeft + frame.offsetWidth / 2;
+  const centerOn = (frame: HTMLElement) => {
+    if (!strip) return;
+    strip.scrollLeft = frameCenter(frame) - strip.clientWidth / 2;
+  };
+  const setWidth = () => {
+    if (allFrames.length === 0 || !Number.isFinite(total) || total < 1) return 0;
+    return frameCenter(allFrames[total * 2]) - frameCenter(allFrames[total]);
   };
 
-  let ticking = false;
-  const coverflowMotion = window.matchMedia('(hover: hover) and (pointer: fine)').matches
-    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const updateActive = () => {
-    ticking = false;
-    if (!strip || frames.length === 0) return;
+  const setActive = (index: number) => {
+    const slot = ((index % total) + total) % total;
+    if (current) current.textContent = String(slot + 1).padStart(2, '0');
+    if (progress && total > 0) {
+      progress.style.width = `${100 / total}%`;
+      progress.style.translate = `${slot * 100}% 0`;
+    }
+  };
+
+  const bestIndex = (): number => {
+    if (!strip || allFrames.length === 0) return total;
     const center = strip.scrollLeft + strip.clientWidth / 2;
-    let best = 0;
+    let best = total;
     let bestDist = Infinity;
-    frames.forEach((frame, index) => {
-      const frameCenter = frame.offsetLeft + frame.offsetWidth / 2;
-      const dist = Math.abs(frameCenter - center);
+    allFrames.forEach((frame, index) => {
+      const dist = Math.abs(frameCenter(frame) - center);
       if (dist < bestDist) {
         bestDist = dist;
         best = index;
       }
-      // Coverflow: tilt away from the viewport center by lateral offset.
-      if (coverflowMotion) {
-        const off = (frameCenter - center) / strip.clientWidth;
-        const deg = Math.max(-22, Math.min(22, off * 44));
-        frame.style.transform = `rotateY(${deg.toFixed(1)}deg)`;
-      }
     });
-    setActive(best);
+    return best;
+  };
+
+  const normalize = () => {
+    if (!strip || total < 1) return;
+    const best = bestIndex();
+    const w = setWidth();
+    if (w <= 0) return;
+    if (best < total) strip.scrollLeft += w;
+    else if (best >= total * 2) strip.scrollLeft -= w;
+  };
+
+  let ticking = false;
+  let normTimer = 0;
+  const updateActive = () => {
+    ticking = false;
+    setActive(bestIndex());
   };
 
   strip?.addEventListener('scroll', () => {
@@ -160,12 +181,27 @@ const { frames } = Astro.props;
       ticking = true;
       requestAnimationFrame(updateActive);
     }
+    window.clearTimeout(normTimer);
+    normTimer = window.setTimeout(normalize, 140);
   }, { passive: true });
+  // Frame centers move with the viewport; re-resolve the active frame and
+  // pull back into the middle copy after resize.
+  window.addEventListener('resize', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => {
+        const slot = ((bestIndex() % total) + total) % total;
+        if (strip && total >= 1 && allFrames[total + slot]) centerOn(allFrames[total + slot]);
+        updateActive();
+      });
+    }
+  });
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const stepFrame = (dir: number) => {
-    if (!strip || frames.length === 0) return;
-    const w = frames[0].offsetWidth + 24;
+    if (!strip || allFrames.length === 0) return;
+    const gap = track ? parseFloat(getComputedStyle(track).columnGap) || 0 : 0;
+    const w = allFrames[0].offsetWidth + gap;
     strip.scrollBy({ left: dir * w, behavior: reducedMotion ? 'auto' : 'smooth' });
   };
   document.querySelector('[data-gallery-prev]')?.addEventListener('click', () => stepFrame(-1));
@@ -212,5 +248,7 @@ const { frames } = Astro.props;
     img.addEventListener('error', () => img.remove());
   });
 
+  // Start on the middle copy so both directions have room before wrapping.
+  if (strip && total >= 1 && allFrames[total]) centerOn(allFrames[total]);
   updateActive();
 </script>

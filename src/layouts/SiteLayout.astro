@@ -1,6 +1,5 @@
 ---
 import '../styles/site.css';
-import MobileNav from '../components/MobileNav.astro';
 import InquiryDrawer from '../components/InquiryDrawer.astro';
 import ScrollChrome from '../components/ScrollChrome.astro';
 
@@ -12,7 +11,7 @@ interface Props {
   noindex?: boolean;
 }
 
-const { title, description, activePath = '', image = '/gallery/ragam/image0.jpeg', noindex = false } = Astro.props;
+const { title, description, activePath = '', image = '/og-image.jpg', noindex = false } = Astro.props;
 const siteUrl = Astro.site ?? new URL('https://dun.digital');
 const canonicalURL = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', siteUrl).href.replace(/\/$/, '/') === new URL('/', siteUrl).href
   ? new URL('/', siteUrl).href
@@ -67,7 +66,7 @@ const pairingRoot = import.meta.env.DEV ? process.cwd() : '';
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageURL} />
-    <meta property="og:image:alt" content="Selected Dun Digital campaign work" />
+    <meta property="og:image:alt" content="Dun Digital — one accountable team for brands that need their digital presence to move as one." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
@@ -109,6 +108,7 @@ const pairingRoot = import.meta.env.DEV ? process.cwd() : '';
     <title>{fullTitle}</title>
   </head>
   <body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-spark" viewBox="0 0 16 16"><path d="M8 1.5v13M1.5 8h13M3.4 3.4l9.2 9.2M12.6 3.4l-9.2 9.2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /></symbol></defs></svg>
     <div class="preloader" data-preloader aria-hidden="true">
       <div class="preloader-inner">
         <img class="preloader-logo" src="/logo-mark.png" alt="Dun Digital" width="48" height="48" />
@@ -123,7 +123,6 @@ const pairingRoot = import.meta.env.DEV ? process.cwd() : '';
         {navLinks.map((link) => <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>{link.label}</a>)}
       </nav>
       <button type="button" class="header-cta" data-inquiry-open>Start a conversation</button>
-      <MobileNav links={navLinks} />
     </header>
 
     <main id="top">

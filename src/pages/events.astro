@@ -1,9 +1,14 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import PhotoStrip from '../components/PhotoStrip.astro';
+import { getImage } from 'astro:assets';
 import { services } from '../data/content';
+import eventsImg1 from '../assets/gallery/textile-summit/PHOTO-2026-01-20-08-10-39.jpg';
+import eventsImg2 from '../assets/gallery/textile-summit/PHOTO-2026-01-02-17-00-15.jpg';
+import eventsImg3 from '../assets/gallery/textile-summit/PHOTO-2026-01-24-16-10-21.jpg';
 
 const events = services.find((service) => service.slug === 'live-event-coverage')!;
+const showreelPoster = await getImage({ src: eventsImg1, widths: [800, 1280], formats: ['webp'], sizes: '100vw' });
 ---
 
 <SiteLayout title="Events" description="Live event coverage from the first teaser to the post-event report. Pre-event promotion, delegate lead gen, LED and venue branding, live updates and speaker bytes — trusted across CII summits and expos." activePath="/events/">
@@ -11,13 +16,13 @@ const events = services.find((service) => service.slug === 'live-event-coverage'
     <section class="page-hero section-wrap">
       <span class="page-index" aria-hidden="true">05</span>
       <div class="breadcrumbs motion-reveal"><ol><li><a href="/">Home</a></li><li>/</li><li aria-current="page">Events</li></ol></div>
-      <div class="motion-reveal" style="--motion-delay:80ms"><span class="sticker sticker-grape">✳ Live event coverage</span><h1>From the first teaser to the <em>post-event report.</em></h1><p class="page-lede">Pre-event promotion, delegate lead gen, LED and venue branding, live updates and speaker bytes — run as one sprint. Trusted across CII summits and expos, from EduTech and IndEx to the Bengaluru Space Expo.</p><div class="hero-ctas"><button type="button" class="button button-outline" data-inquiry-open>Plan your event</button></div></div>
+      <div class="motion-reveal" style="--motion-delay:80ms"><span class="sticker sticker-grape"><svg class="tick" aria-hidden="true"><use href="#i-spark" /></svg>Live event coverage</span><h1>From the first teaser to the <em>post-event report.</em></h1><p class="page-lede">Pre-event promotion, delegate lead gen, LED and venue branding, live updates and speaker bytes — run as one sprint. Trusted across CII summits and expos, from EduTech and IndEx to the Bengaluru Space Expo.</p><div class="hero-ctas"><button type="button" class="button button-outline" data-inquiry-open>Plan your event</button></div></div>
     </section>
 
     <section class="showreel section-wrap motion-section" aria-label="Showreel 2026">
       <div class="showreel-frame motion-reveal">
         <div class="showreel-head"><span>Showreel 2026 — 01:30</span><span>Brand shoots · Events · Reels</span></div>
-        <video controls preload="none" poster="/gallery/textile-summit/PHOTO-2026-01-20-08-10-39.jpg" aria-label="Dun Digital showreel 2026">
+        <video controls preload="none" poster={showreelPoster.src} aria-label="Dun Digital showreel 2026">
           <source src="/showreel-2026.mp4" type="video/mp4" />
         </video>
       </div>
@@ -32,9 +37,9 @@ const events = services.find((service) => service.slug === 'live-event-coverage'
     </section>
 
     <PhotoStrip title="On the ground" frames={[
-      { image: '/gallery/textile-summit/PHOTO-2026-01-20-08-10-39.jpg', caption: 'Venue branding at an industry summit.' },
-      { image: '/gallery/textile-summit/PHOTO-2026-01-02-17-00-15.jpg', caption: 'Live updates carrying a single voice.' },
-      { image: '/gallery/textile-summit/PHOTO-2026-01-24-16-10-21.jpg', caption: 'Speaker moments, captured live.' },
+      { image: eventsImg1, caption: 'Venue branding at an industry summit.' },
+      { image: eventsImg2, caption: 'Live updates carrying a single voice.' },
+      { image: eventsImg3, caption: 'Speaker moments, captured live.' },
     ]} />
 
     <section class="cta-teaser section-wrap motion-reveal"><h2>Planning an event?</h2><p>Tell us the date, the venue and the outcome you need. We will bring the sprint — promotion, branding, coverage and report.</p><button type="button" class="button button-outline" data-inquiry-open>Plan your event</button></section>

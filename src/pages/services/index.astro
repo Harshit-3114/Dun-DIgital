@@ -3,6 +3,9 @@ import SiteLayout from '../../layouts/SiteLayout.astro';
 import CapabilityList from '../../components/CapabilityList.astro';
 import PhotoStrip from '../../components/PhotoStrip.astro';
 import { services } from '../../data/content';
+import svcImg1 from '../../assets/gallery/comfort-point/image2.jpeg';
+import svcImg2 from '../../assets/gallery/igs/image1.jpeg';
+import svcImg3 from '../../assets/gallery/ragam/image5.jpeg';
 
 const serviceCategories = ['All', ...Array.from(new Set(services.map((service) => service.category)))];
 ---
@@ -29,9 +32,9 @@ const serviceCategories = ['All', ...Array.from(new Set(services.map((service) =
     </section>
 
     <PhotoStrip title="Recent service work" frames={[
-      { image: '/gallery/comfort-point/image2.jpeg', caption: 'Hamper and gifting work for Comfort Point.' },
-      { image: '/gallery/igs/image1.jpeg', caption: 'Platform-native campaign creatives.' },
-      { image: '/gallery/ragam/image5.jpeg', caption: 'Collateral systems for Raagam Polymound.' },
+      { image: svcImg1, caption: 'Hamper and gifting work for Comfort Point.' },
+      { image: svcImg2, caption: 'Platform-native campaign creatives.' },
+      { image: svcImg3, caption: 'Collateral systems for Raagam Polymound.' },
     ]} />
 
     <section class="faq section-wrap motion-section">

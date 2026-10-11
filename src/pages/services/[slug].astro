@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import { Picture } from 'astro:assets';
 import { services } from '../../data/content';
 
 export function getStaticPaths() {
@@ -17,7 +18,7 @@ const { service } = Astro.props;
       <div class="motion-reveal" style="--motion-delay:80ms"><h1>{service.title}</h1><p class="page-lede">{service.intro}</p></div>
     </section>
 
-    <section class="case-detail section-wrap motion-section"><div class="case-detail-image motion-reveal"><img src={service.image} alt={`${service.title} campaign work`} loading="eager" decoding="async" data-case-detail-img /><span class="case-detail-label">{service.category} · No. {service.number}</span><b>SVC / {service.number}</b></div><div class="case-detail-copy motion-reveal"><h2>Make it useful.</h2><p>{service.detail}</p><p>We bring the right level of thinking, making and measurement around the job, without adding layers for the sake of it.</p><button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button></div></section>
+    <section class="case-detail section-wrap motion-section"><div class="case-detail-image motion-reveal"><Picture fallbackFormat="webp" src={service.image} alt={`${service.title} campaign work`} loading="eager" decoding="async" widths={[640, 1024]} sizes="(max-width: 768px) 100vw, 55vw" formats={['avif', 'webp']} data-case-detail-img /><span class="case-detail-label">{service.category} · No. {service.number}</span><b>SVC / {service.number}</b></div><div class="case-detail-copy motion-reveal"><h2>Make it useful.</h2><p>{service.detail}</p><p>We bring the right level of thinking, making and measurement around the job, without adding layers for the sake of it.</p><button type="button" class="button button-outline" data-inquiry-open>Start a conversation</button></div></section>
 
     <section class="deliverables section-wrap motion-section"><div class="deliverables-grid"><div class="deliverables-intro motion-reveal"><h2>From first idea to useful output.</h2><p>A practical scope that can be shaped around the brief and the team already in the room.</p></div><div class="deliverable-list motion-reveal">{service.deliverables.map((deliverable, index) => <div class="deliverable-row"><span>0{index + 1}</span><strong>{deliverable}</strong></div>)}</div></div><div class="deliverable-outcome motion-reveal"><span>The outcome</span><p>{service.outcome}</p></div><div class="deliverable-outcome motion-reveal"><span>Delivered for</span><p>{service.deliveredFor}</p></div></section>
 
