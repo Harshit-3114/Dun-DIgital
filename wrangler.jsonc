@@ -1,0 +1,11 @@
+{
+  // Static-asset deploy for the Astro `output: static` build in ./dist.
+  // Present so `wrangler deploy` uploads as-is instead of running its
+  // auto-setup (which would add @astrojs/cloudflare and convert the
+  // project to SSR). `_headers` ships inside dist via public/_headers.
+  "name": "dun-digital",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}
