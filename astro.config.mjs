@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
-const site = process.env.PUBLIC_SITE_URL ?? 'https://dun.digital';
+const site = process.env.PUBLIC_SITE_URL ?? 'https://dundigital.in';
 
 export default defineConfig({
   site,

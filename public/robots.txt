@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dun.digital/sitemap-index.xml
+Sitemap: https://dundigital.in/sitemap-index.xml

@@ -17,7 +17,7 @@ Both audiences are skimming to answer: "Can this team carry my whole brief, and 
 
 ## Product Purpose
 
-The site is Dun Digital's public front door (dun.digital). It exists to convert evaluation into conversation: demonstrate the eight connected service lines, show proof through selected work, and route visitors into an inquiry. Success is an inquiry submitted (drawer form, Google Form, or `hello@dun.digital` email) — with credibility and recall as the supporting outcome when conversion happens off-site later.
+The site is Dun Digital's public front door (dundigital.in). It exists to convert evaluation into conversation: demonstrate the eight connected service lines, show proof through selected work, and route visitors into an inquiry. Success is an inquiry submitted (drawer form, Google Form, or `hello@dun.digital` email) — with credibility and recall as the supporting outcome when conversion happens off-site later.
 
 ## Positioning
 

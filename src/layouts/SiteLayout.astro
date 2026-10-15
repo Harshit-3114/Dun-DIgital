@@ -12,7 +12,7 @@ interface Props {
 }
 
 const { title, description, activePath = '', image = '/og-image.jpg', noindex = false } = Astro.props;
-const siteUrl = Astro.site ?? new URL('https://dun.digital');
+const siteUrl = Astro.site ?? new URL('https://dundigital.in');
 const canonicalURL = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', siteUrl).href.replace(/\/$/, '/') === new URL('/', siteUrl).href
   ? new URL('/', siteUrl).href
   : new URL(Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`, siteUrl).href;
@@ -77,19 +77,19 @@ const pairingRoot = import.meta.env.DEV ? process.cwd() : '';
       '@graph': [
         {
           '@type': 'Organization',
-          '@id': 'https://dun.digital/#org',
+          '@id': 'https://dundigital.in/#org',
           name: 'Dun Digital',
-          url: 'https://dun.digital/',
-          logo: 'https://dun.digital/logo-stacked-light.png',
+          url: 'https://dundigital.in/',
+          logo: 'https://dundigital.in/logo-stacked-light.png',
           email: 'ops@dundigital.in',
           address: { '@type': 'PostalAddress', addressLocality: 'Chennai', addressCountry: 'IN' },
         },
         {
           '@type': 'WebSite',
-          '@id': 'https://dun.digital/#website',
-          url: 'https://dun.digital/',
+          '@id': 'https://dundigital.in/#website',
+          url: 'https://dundigital.in/',
           name: 'Dun Digital',
-          publisher: { '@id': 'https://dun.digital/#org' },
+          publisher: { '@id': 'https://dundigital.in/#org' },
         },
         {
           '@type': 'WebPage',
@@ -97,7 +97,7 @@ const pairingRoot = import.meta.env.DEV ? process.cwd() : '';
           url: canonicalURL,
           name: fullTitle,
           description,
-          isPartOf: { '@id': 'https://dun.digital/#website' },
+          isPartOf: { '@id': 'https://dundigital.in/#website' },
         },
       ],
     })} />
