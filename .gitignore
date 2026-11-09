@@ -26,3 +26,6 @@ Gallery/*.mp4
 
 # Reticle verification artifacts stay local
 .reticle/flows/
+
+# Standalone scratch prototype of the homepage (superseded by src/pages/index.astro)
+Main.dc.html
